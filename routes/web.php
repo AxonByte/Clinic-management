@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\DoctorHolidayController;
 use App\Http\Controllers\Admin\PatientCOntroller;
 use App\Http\Controllers\Admin\SymptomController;
 use App\Http\Controllers\Admin\DiagnosisController;
+use App\Http\Controllers\Admin\Patient\TreatmentController;
+use App\Http\Controllers\Admin\Patient\AdviceController;
+use App\Http\Controllers\Admin\Patient\CasesController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -39,6 +42,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/{id}', 'update')->name('update');
     Route::delete('/{id}', 'destroy')->name('destroy');
   });
+
     Route::prefix('admin/doctor')->name('admin.doctor.')->controller(DoctorController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
@@ -73,11 +77,31 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
      Route::put('/update/{id}', 'update')->name('update');
     Route::delete('/delete/{id}', 'destroy')->name('delete');
   });
-
   Route::prefix('admin')->group(function () {
     Route::resource('symptoms', SymptomController::class)->except(['create', 'edit', 'show']);
     Route::resource('diagnoses', DiagnosisController::class)->except(['create', 'edit', 'show']);
     Route::get('diagnosis/{id}/edit', [DiagnosisController::class, 'edit'])->name('diagnoses.edit');
+});
+
+Route::prefix('admin/patient')->name('admin.patient.')->controller(TreatmentController::class)->group(function () { 
+    Route::get('treatments', 'index')->name('treatments.index');
+    Route::post('treatments',  'store')->name('treatments.store');
+    Route::get('treatments/{id}/edit', 'edit')->name('treatments.edit');
+    Route::delete('treatments/{id}','destroy')->name('treatments.destroy');
+});
+Route::prefix('admin/patient')->name('admin.patient.')->controller(AdviceController::class)->group(function () { 
+    Route::get('advice', 'index')->name('advice.index');
+    Route::post('advice',  'store')->name('advice.store');
+    Route::get('advice/{id}/edit', 'edit')->name('advice.edit');
+    Route::delete('advice/{id}','destroy')->name('advice.destroy');
+});
+Route::prefix('admin/patient')->name('admin.patient.')->controller(CasesController::class)->group(function () { 
+    Route::get('cases', 'index')->name('cases.index');
+    Route::get('cases/create', 'create')->name('cases.create');
+    Route::post('cases',  'store')->name('cases.store');
+    Route::get('cases/{id}/edit', 'edit')->name('cases.edit');
+    Route::put('cases/{id}/update', 'update')->name('cases.update');
+    Route::delete('cases/{id}','destroy')->name('cases.destroy');
 });
 
 

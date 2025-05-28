@@ -31,12 +31,6 @@
         <div class="sidebar-list">
             <!-- Sidebar Menu Start -->
             <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
-                <li class="nav-item static-item">
-                    <a class="nav-link static-item disabled" href="#" tabindex="-1">
-                        <span class="default-icon">Home</span>
-                        <span class="mini-icon">-</span>
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="../dashboard/index.html">
                         <i class="icon">
@@ -156,7 +150,7 @@
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/app/user-list.html">
+                            <a class="nav-link " href="{{ route('admin.patient.cases.index')}}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -195,7 +189,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/app/user-list.html">
+                            <a class="nav-link " href="{{ route('admin.patient.treatments.index')}}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -208,7 +202,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="../dashboard/app/user-list.html">
+                            <a class="nav-link " href="{{ route('admin.patient.advice.index')}}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>

@@ -40,6 +40,11 @@
   </head>
 
 <body>
+<div id="alertBox"
+     class="alert d-none position-fixed"
+     style="top: 20px; right: 20px; z-index: 9999; min-width: 250px; border-radius: 5px;"
+     role="alert">
+</div>
 
    <!-- Loader END -->
 
@@ -94,5 +99,35 @@
     <script src="{{ asset('assets/js/hope-ui.js')}}" defer></script>
 
 {{-- <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> --}}
+<script>
+function showMessage(type, message) {
+    const alertBox = $('#alertBox');
+    alertBox.removeClass('d-none alert-success alert-danger alert-warning alert-info')
+            .addClass('alert')
+            .text(message);
+    if (type === 'success') {
+        alertBox.css({
+            'background-color': '#11af0d', // dark green
+            'color': '#fff',
+            'border': '1px solid #0f3d2e',
+            'box-shadow': '0 4px 8px rgba(0, 0, 0, 0.1)'
+        });
+    } else if (type === 'danger') {
+        alertBox.css({
+            'background-color': '#721c24',
+            'color': '#fff',
+            'border': '1px solid #f5c6cb',
+            'box-shadow': '0 4px 8px rgba(0, 0, 0, 0.1)'
+        });
+    }
+    alertBox.removeClass('d-none').fadeIn();
+    setTimeout(() => {
+        alertBox.fadeOut(400, function () {
+            $(this).addClass('d-none');
+        });
+    }, 5000);
+}
+
+</script>
 </body>
 </html>
