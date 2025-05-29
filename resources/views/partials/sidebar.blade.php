@@ -242,7 +242,7 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-appointment" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.patient.index') }}">
+                            <a class="nav-link " href="{{ route('admin.appointment.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -256,7 +256,7 @@
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ route('admin.patient.cases.index')}}">
+                            <a class="nav-link " href="{{ route('admin.appointment.create')}}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>

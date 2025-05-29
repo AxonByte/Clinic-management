@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\Patient\TreatmentController;
 use App\Http\Controllers\Admin\Patient\AdviceController;
 use App\Http\Controllers\Admin\Patient\CasesController;
 use App\Http\Controllers\Admin\Patient\DocumentCOntroller;
+use App\Http\Controllers\Admin\Appointment\AppointmentController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -110,6 +111,19 @@ Route::prefix('admin/patient')->name('admin.patient.')->controller(DocumentCOntr
     Route::get('documents/{id}/edit', 'edit')->name('documents.edit');
     Route::delete('documents/{id}', 'destroy')->name('documents.destroy');
     Route::get('documents/{document}/download','download')->name('documents.download');
+});
+Route::prefix('admin/')->name('admin.appointment.')->controller(AppointmentController::class)->group(function () { 
+   Route::get('appointment', 'index')->name('index');
+    Route::get('appointment/data/{status}', 'getData')->name('data');
+    Route::get('appointment/create', 'create')->name('create');
+    Route::post('appointment', 'store')->name('store');
+    Route::get('appointment/{id}/edit', 'edit')->name('edit');
+    Route::get('appointment/{id}/update', 'update')->name('update');
+    Route::delete('appointment/{id}', 'destroy')->name('destroy');
+    Route::get('/get-visit-types/{doctor}','getVisitTypes');
+    Route::get('/get-visit-charge/{doctor}/{visitType}', 'getVisitCharge');
+    Route::get('/schedule/slots', 'getAvailableSlots')->name('schedule.slots');
+
 });
 
 
