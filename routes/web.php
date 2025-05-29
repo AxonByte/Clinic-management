@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DiagnosisController;
 use App\Http\Controllers\Admin\Patient\TreatmentController;
 use App\Http\Controllers\Admin\Patient\AdviceController;
 use App\Http\Controllers\Admin\Patient\CasesController;
+use App\Http\Controllers\Admin\Patient\DocumentCOntroller;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -102,6 +103,13 @@ Route::prefix('admin/patient')->name('admin.patient.')->controller(CasesControll
     Route::get('cases/{id}/edit', 'edit')->name('cases.edit');
     Route::put('cases/{id}/update', 'update')->name('cases.update');
     Route::delete('cases/{id}','destroy')->name('cases.destroy');
+});
+Route::prefix('admin/patient')->name('admin.patient.')->controller(DocumentCOntroller::class)->group(function () { 
+   Route::get('documents', 'index')->name('documents.index');
+    Route::post('documents', 'store')->name('documents.store');
+    Route::get('documents/{id}/edit', 'edit')->name('documents.edit');
+    Route::delete('documents/{id}', 'destroy')->name('documents.destroy');
+    Route::get('documents/{document}/download','download')->name('documents.download');
 });
 
 
