@@ -23,7 +23,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $role = Auth::user()->role;
-            // dd($role);
+            
             return match ($role) {
                 'superadmin' => redirect()->route('superadmin.dashboard.index'),
                 'admin' => redirect()->route('admin.dashboard.index'),
@@ -33,8 +33,10 @@ class LoginController extends Controller
                 'laboratorist' => redirect()->route('laboratorist.dashboard.index'),
                 default => redirect()->route('home'),
             };
+            session()->flash('success', 'Test message works!');
         }
-       return back()->with('error', 'Invalid email or password');
+        session()->flash('error', 'Invalid email or password');
+        return view('auth.login');
 
     }
 

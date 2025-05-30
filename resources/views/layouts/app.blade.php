@@ -7,7 +7,7 @@
       <title>Rich Care</title>
       
       <!-- Favicon -->
-     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" />
+     <link rel="shortcut icon" href="{{ asset('assets/images/RCH_Logo.png') }}" height="60px" />
 
       <!-- Library / Plugin Css Build -->
       <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
@@ -37,6 +37,8 @@
         .main { flex: 1; display: flex; }
         /* .main-content { flex: 1; padding: 20px; overflow-y: auto; } */
     </style>
+       <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+
   </head>
 
 <body>
@@ -58,13 +60,23 @@
 
         <!-- Page Content -->
         <div class="container-fluid mt-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             @yield('content')
         </div>
+         @include('partials.footer')
     </main>
 <!-- Order matters -->
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
 
 
         <!-- Library Bundle Script -->

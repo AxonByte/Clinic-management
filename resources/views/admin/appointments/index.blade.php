@@ -43,10 +43,12 @@
                                         <th>#</th>
                                         <th>Patient</th>
                                         <th>Doctor</th>
-                                        <th>Date</th>
+                                        <th>Date-Time</th>
                                         <th>Visit Type</th>
-                                        <th>Total</th>
                                         <th>Status</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Bill Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -91,8 +93,11 @@ $(function () {
                 { data: 'doctor', name: 'doctor.name' },
                 { data: 'appointment_date', name: 'appointment_date' },
                 { data: 'visit_type', name: 'visit_type' },
-                { data: 'total_amount', name: 'total_amount' },
+                
                 { data: 'status', name: 'status' },
+                { data: 'notes', name: 'notes' },
+                { data: 'total_amount', name: 'total_amount' },
+                { data: 'bill_status', name: 'bill_status' },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false },
             ]
         });
@@ -108,6 +113,27 @@ $(function () {
         const status = $(this).data('status');
         loadTable(tabId, status);
     });
+
+    $(document).on('click', '.deleteBtn', function() {
+        if (confirm("Are you sure want to delete this record ?")) {
+            let id = $(this).data('id');
+            let tableId = $(this).closest('table').attr('id');
+
+            $.ajax({
+                url: "{{ url('admin/appointment') }}/" + id,
+                type: 'DELETE',
+                data: { _token: '{{ csrf_token() }}' },
+                success: function(response) {
+                    $('#' + tableId).DataTable().ajax.reload();
+                    showMessage('success', response.message || 'Deleted successfully.');
+                },
+                error: function() {
+                    showMessage('danger', 'Error deleting data.');
+                }
+            });
+        }
+    });
+
 });
 </script>
  @endsection

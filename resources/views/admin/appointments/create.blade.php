@@ -2,6 +2,23 @@
 @section('content')
     <div class="conatiner-fluid content-inner mt-n5 py-0">
         <div>
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+           @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -78,7 +95,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="visit_charge" class="form-label fw-bold">Visit Charges</label>
-                                    <input type="text" name="visit_charge" class="form-control" id="visit_charge" readonly>
+                                    <input type="text" name="visit_charges" class="form-control" id="visit_charge" readonly>
                                 </div>
 
                                 <div class="col-md-6">

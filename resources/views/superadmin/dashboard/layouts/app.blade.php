@@ -4,10 +4,11 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Hope UI | Responsive Bootstrap 5 Admin Dashboard Template</title>
+      <title>Rich Care</title>
       
       <!-- Favicon -->
-     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" />
+      <link rel="shortcut icon" href="{{ asset('assets/images/RCH_Logo.png') }}" height="60px" />
+
 
       <!-- Library / Plugin Css Build -->
       <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />

@@ -69,6 +69,7 @@ $(function() {
             { data: 'action', orderable: false, searchable: false }
         ]
     });
+    
     $('#caseTable').on('click', '.deleteBtn', function() {
         if (confirm("Are you sure?")) {
             let id = $(this).data('id');

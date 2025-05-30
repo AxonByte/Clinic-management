@@ -118,12 +118,15 @@ Route::prefix('admin/')->name('admin.appointment.')->controller(AppointmentContr
     Route::get('appointment/create', 'create')->name('create');
     Route::post('appointment', 'store')->name('store');
     Route::get('appointment/{id}/edit', 'edit')->name('edit');
-    Route::get('appointment/{id}/update', 'update')->name('update');
+    Route::put('appointment/{appointment}/update', 'update')->name('update');
     Route::delete('appointment/{id}', 'destroy')->name('destroy');
     Route::get('/get-visit-types/{doctor}','getVisitTypes');
     Route::get('/get-visit-charge/{doctor}/{visitType}', 'getVisitCharge');
     Route::get('/schedule/slots', 'getAvailableSlots')->name('schedule.slots');
-
+     Route::get('appointment/todays', 'todaysAppointment')->name('todays');
+     Route::get('appointment/upcoming', 'upcomingAppointment')->name('upcoming');
+     Route::get('appointment/calendar', 'calendar')->name('calendar');
+     Route::get('appointment/request', 'requestedAppointment')->name('request');
 });
 
 
