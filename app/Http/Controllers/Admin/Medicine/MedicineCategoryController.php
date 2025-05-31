@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Http\Controllers\Admin\Medicine;
+
+use App\Http\Controllers\Controller;
+use App\Models\MedicineCategory;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+
+class MedicineCategoryController extends Controller
+{
+      public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = MedicineCategory::latest()->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    return '
+                        <button class="btn btn-sm btn-primary editBtn" data-id="' . $row->id . '">Edit</button>
+                        <button class="btn btn-sm btn-danger deleteBtn" data-id="' . $row->id . '">Delete</button>
+                    ';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('admin.medicine.category.index');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:255']);
+        MedicineCategory::updateOrCreate(
+            ['id' => $request->id],
+            ['name' => $request->name]
+        );
+        return response()->json(['success' => true]);
+    }
+
+    public function edit($id)
+    {
+        $data = MedicineCategory::find($id);
+        return response()->json($data);
+    }
+
+    public function destroy($id)
+    {
+        MedicineCategory::find($id)->delete();
+        return response()->json(['success' => true]);
+    }
+}

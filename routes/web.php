@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\Patient\AdviceController;
 use App\Http\Controllers\Admin\Patient\CasesController;
 use App\Http\Controllers\Admin\Patient\DocumentCOntroller;
 use App\Http\Controllers\Admin\Appointment\AppointmentController;
+use App\Http\Controllers\Admin\Medicine\MedicineController;
+use App\Http\Controllers\Admin\Medicine\MedicineCategoryController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -51,6 +53,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/store', 'store')->name('store');
     Route::put('/{id}', 'update')->name('update');
     Route::delete('/{id}', 'destroy')->name('destroy');
+     Route::get('/show/{id}', 'show')->name('show');
   });
 
   Route::prefix('admin/doctor')->name('admin.doctor.')->controller(DoctorVisitController::class)->group(function () {  
@@ -123,12 +126,21 @@ Route::prefix('admin/')->name('admin.appointment.')->controller(AppointmentContr
     Route::get('/get-visit-types/{doctor}','getVisitTypes');
     Route::get('/get-visit-charge/{doctor}/{visitType}', 'getVisitCharge');
     Route::get('/schedule/slots', 'getAvailableSlots')->name('schedule.slots');
-     Route::get('appointment/todays', 'todaysAppointment')->name('todays');
-     Route::get('appointment/upcoming', 'upcomingAppointment')->name('upcoming');
-     Route::get('appointment/calendar', 'calendar')->name('calendar');
-     Route::get('appointment/request', 'requestedAppointment')->name('request');
+    Route::get('appointment/todays', 'todaysAppointment')->name('todays');
+    Route::get('appointment/upcoming', 'upcomingAppointment')->name('upcoming');
+    Route::get('appointment/calendar', 'calendar')->name('calendar');
+    Route::get('appointment/request', 'requestedAppointment')->name('request');
 });
-
+Route::prefix('admin/')->name('admin.medicine.')->controller(MedicineController::class)->group(function () { 
+   Route::get('medicine', 'index')->name('index');
+    Route::get('medicine/create', 'create')->name('create');
+    Route::post('medicine', 'store')->name('store');
+    Route::get('medicine/{id}/edit', 'edit')->name('edit');
+    Route::put('medicine/{medicine}/update', 'update')->name('update');
+    Route::delete('medicine/{id}', 'destroy')->name('destroy');
+    Route::get('/medicine/medicine-categories', [MedicineCategoryController::class,'index'])->name('medicine-categories.list');
+    Route::post('/medicine/medicine-categories', [MedicineCategoryController::class,'store'])->name('medicine-categories.store');
+});
 
 
 

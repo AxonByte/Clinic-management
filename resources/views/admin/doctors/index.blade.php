@@ -101,6 +101,56 @@
 </div>
 
 <!-- Modal End -->
+
+<div class="modal fade" id="doctorDetailModal" tabindex="-1" aria-labelledby="doctorDetailLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="doctorDetailLabel">Doctor Info</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+
+        <div class="spinner-border text-primary d-none" id="modal-loader" role="status"></div>
+
+        <div class="my-3">
+          <img id="doctor-photo" src="" alt="Doctor Photo" class="rounded-circle shadow" width="120" height="120" style="object-fit: cover;">
+        </div>
+        <div class="card shadow mt-3 mx-3">
+          <div class="card-body text-start">
+            <div class="row mb-2">
+              <div class="col-md-3 fw-bold text-uppercase">NAME</div>
+              <div class="col-md-9" id="doctor-name"></div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-3 fw-bold text-uppercase">EMAIL</div>
+              <div class="col-md-9" id="doctor-email"></div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-3 fw-bold text-uppercase">ADDRESS</div>
+              <div class="col-md-9" id="doctor-address"></div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-3 fw-bold text-uppercase">PHONE</div>
+              <div class="col-md-9" id="doctor-phone"></div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-3 fw-bold text-uppercase">DEPARTMENT</div>
+              <div class="col-md-9" id="doctor-department"></div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-3 fw-bold text-uppercase">DESCRIPTION</div>
+              <div class="col-md-9" id="doctor-description"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
             <div class="card-body">
                <div class="table-responsive">
                   <table id="doctor" class="table table-striped" data-toggle="data-table">
@@ -141,7 +191,7 @@
         });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script>
   $(document).ready(function () {
     $('#doctor').DataTable({
@@ -266,19 +316,30 @@ function showToast(message, type) {
     const toast = new bootstrap.Toast(toastEl);
     toast.show();
 }
-$(document).on('click', '.view-btn', function () {
-    $('#modalName').text($(this).data('name'));
-    $('#modalEmail').text($(this).data('email'));
-    $('#modalPhone').text($(this).data('phone'));
-    $('#modalAddress').text($(this).data('address'));
-    $('#modalDepartment').text($(this).data('department_id'));
-    $('#modalDescription').text($(this).data('description'));
-    $('#modalPhoto').attr('src', $(this).data('photo'));
-    $('#modalSignature').attr('src', $(this).data('signature'));
-});
 
 </script>
- @endsection
- @section('scripts')
- 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('doctorDetailModal');
+    modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const name = button.getAttribute('data-name');
+        const email = button.getAttribute('data-email');
+        const address = button.getAttribute('data-address');
+        const phone = button.getAttribute('data-phone');
+        const department = button.getAttribute('data-department_id');
+        const description = button.getAttribute('data-description');
+        const photo = button.getAttribute('data-photo');
+
+        document.getElementById('doctor-name').textContent = name;
+        document.getElementById('doctor-email').textContent = email;
+        document.getElementById('doctor-address').textContent = address;
+        document.getElementById('doctor-phone').textContent = phone;
+        document.getElementById('doctor-department').textContent = department;
+        document.getElementById('doctor-description').textContent = description;
+        document.getElementById('doctor-photo').src = photo;
+    });
+});
+</script>
+
  @endsection
