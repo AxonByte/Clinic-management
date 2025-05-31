@@ -1,6 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
+ <style>
+    .fc .fc-daygrid-event {
+  white-space: normal !important;
+  height: auto !important;
+  width: auto !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  border: none;
+}
+
+.fc-event-main {
+  white-space: normal !important;
+}
+
+.fc-daygrid-day-frame {
+  display: block;
+}
+
+.fc-daygrid-event-harness {
+  height: auto !important;
+}
+
+.fc .fc-daygrid-day {
+  min-height: 120px;
+  vertical-align: top;
+}
+
+/* .fc-daygrid-day {
+  min-width: 200px !important;
+}
+
+.fc .fc-col-header-cell {
+  min-width: 200px !important;
+}
+
+#calendar {
+  min-width: 1400px; 
+} */
+
+ </style>
 <div class="conatiner-fluid content-inner mt-n5 py-0">
     <div class="row">
         <div class="col-md-12">
@@ -14,7 +54,9 @@
                 <hr style="color: blue;">
                 <div class="card-body">
                     <!-- Calendar -->
+                  <div style="overflow-x: auto;">
                     <div id="calendar"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -22,32 +64,57 @@
 </div>
 
 <!-- FullCalendar CSS & JS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      initialView: 'dayGridMonth',
+      fixedWeekCount: false,
+      contentHeight: 'auto',
+      dayMaxEventRows: true,
+      events: [
+       @foreach($appointments as $appointment)
+    @php
+        $color = match(strtolower($appointment->status)) {
+            'confirmed' => '#198754',
+            'requested', 'pending confirmation' => '#ffc107',
+            'treated' => 'green',
+            'cancelled' => 'red',
+            default => '#0dcaf0',
+        };
+
+        // Parse time range
+        $times = explode('-', $appointment->time_slot);
+        $startTime = isset($times[0]) ? \Carbon\Carbon::parse(trim($times[0]))->format('h:i A') : '';
+        $endTime = isset($times[1]) ? \Carbon\Carbon::parse(trim($times[1]))->format('h:i A') : '';
+        @endphp
+
+        {
+        title: `<div class="fc-appointment-card text-white rounded p-2 mt-2" style="background-color: {{ $color }}">
+                    {{ $startTime }} - {{ $endTime }}<br>
+                    Status: {{ $appointment->status }}<br>
+                    Patient: {{ $appointment->patient->name }}<br>
+                    Phone: {{ $appointment->patient->phone }}<br>
+                    Doctor: {{ $appointment->doctor->name }}<br>
+                    Remarks: {{ $appointment->description }}
+                </div>`,
+        start: '{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d') }}',
+        allDay: true,
         },
-        events: [
-            @foreach($appointments as $appointment)
-            {
-                title: `Status: {{ $appointment->status }}\nPatient: {{ $appointment->patient->name }}\nPhone: {{ $appointment->patient->phone }}\nDoctor: {{ $appointment->doctor->name }}\nRemarks: {{ $appointment->remarks }}`,
-                start: '{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d') }}',
-                color: '{{ $appointment->status == "Confirmed" ? "#6f42c1" : ($appointment->status == "Requested" ? "#0dcaf0" : "#6c757d") }}'
-            },
-            @endforeach
-        ]
+    @endforeach
+
+      ],
+      eventContent: function (arg) {
+        return { html: arg.event.title };
+      }
     });
 
     calendar.render();
-});
+  });
 </script>
+
 @endsection

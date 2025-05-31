@@ -6,9 +6,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       {{-- <title>Rich Care</title> --}}
       <title>{{ $pageTitle ?? 'Rich Care' }}</title>
-
-      
-      
       <!-- Favicon -->
      <link rel="shortcut icon" href="{{ asset('assets/images/RCH_Logo.png') }}" height="60px" />
 
@@ -32,7 +29,8 @@
       
       <!-- RTL Css -->
       <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/>
-      
+       <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+
       {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" /> --}}
       <style>
         body { margin: 0; height: 100%; overflow-x: hidden;
@@ -40,8 +38,7 @@
         .main { flex: 1; display: flex; }
         /* .main-content { flex: 1; padding: 20px; overflow-y: auto; } */
     </style>
-       <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
-
+       
   </head>
 
 <body>
@@ -51,9 +48,6 @@
      role="alert">
 </div>
 
-   <!-- Loader END -->
-
-    <!-- Sidebar -->
     @include('partials.sidebar')
 
     <!-- Main Content -->
@@ -61,7 +55,6 @@
         <!-- Navbar -->
         @include('partials.header')
 
-        <!-- Page Content -->
         <div class="container-fluid mt-4">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
@@ -69,17 +62,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
             @yield('content')
         </div>
          @include('partials.footer')
     </main>
 <!-- Order matters -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- FullCalendar JS -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
 
 
         <!-- Library Bundle Script -->
