@@ -14,6 +14,7 @@ class DoctorScheduleController extends Controller
     
     public function index(Request $request)
     {
+        $pageTitle = 'Doctor Schedule';
         $doctors = User::where('role','doctor')->get();
         if ($request->ajax()) {
             $data = DoctorSchedule::with('doctor');
@@ -29,7 +30,7 @@ class DoctorScheduleController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        return view('admin.doctors.schedule.schedule', compact('doctors'));
+        return view('admin.doctors.schedule.schedule', compact('doctors','pageTitle'));
     }
 
     public function store(Request $request)

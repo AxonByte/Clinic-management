@@ -12,8 +12,8 @@ class DiagnosisController extends Controller
 
     public function index(Request $request)
     {
-
-        return view('admin.diagnosis.index', ['diagnoses' => Diagnosis::all()]);
+        $pageTitle = 'Diagnosis';
+        return view('admin.diagnosis.index', ['diagnoses' => Diagnosis::all()], compact('pageTitle'));
     }
 
     public function store(Request $request)

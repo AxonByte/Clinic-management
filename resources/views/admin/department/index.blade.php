@@ -1,6 +1,7 @@
-@extends('admin.dashboard.layouts.app')
+@extends('layouts.app')
 @section('content')
-    <div class="container-fluid p-4">
+   
+<div class="conatiner-fluid content-inner mt-n5 py-0">
         <!-- Header -->
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
             <div id="messageToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -11,9 +12,20 @@
             </div>
         </div>
 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between mb-2">
+                    <div class="header-title">
+                        <h4>Departments</h4>
+                    </div>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                <i class="bi bi-plus-lg"></i> Add New Department
+            </button>
+                </div>
 
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        {{-- <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
                 <h4><i class="bi bi-building me-2 text-primary"></i>Departments</h4>
                 <nav>
@@ -24,7 +36,7 @@
                 <i class="bi bi-plus-lg"></i> Add New Department
             </button>
 
-        </div>
+        </div> --}}
 
         <!-- Modal -->
         <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel"
@@ -33,7 +45,7 @@
                 <div class="modal-content">
                     <form id="addDepartmentForm" enctype="multipart/form-data" action="{{ route('admin.department.store')}}" method="POST">
                         @csrf
-                        <div class="modal-header bg-primary">
+                        <div class="modal-header">
                             <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -54,7 +66,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save Department</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
 
@@ -63,21 +75,8 @@
         </div>
 
         <!-- Table Tools -->
-        <div class="card shadow-sm">
+        
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        
-                        <button class="btn btn-light">Copy</button>
-                        <button class="btn btn-light">Excel</button>
-                        <button class="btn btn-light">CSV</button>
-                        <button class="btn btn-light">PDF</button>
-                        <button class="btn btn-light">Print</button>
-                    </div>
-                    
-                </div>
-
-                <!-- Table -->
                 <div class="table-responsive">
                     <table class="table table-bordered align-middle mt-5" id="department">
                         <thead class="table-primary text-center">
@@ -91,9 +90,11 @@
                 </div>
 
             </div>
-        </div>
+        
+      </div>
     </div>
-
+</div>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
     let departmentEditor;
     ClassicEditor

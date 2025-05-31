@@ -16,6 +16,7 @@ class CasesController extends Controller
 {
     public function index(Request $request)
     {
+         $pageTitle = 'Cases List';
         if ($request->ajax()) {
             $data = CaseRecord::with('patient')->latest()->get();
             return DataTables::of($data)
@@ -30,16 +31,17 @@ class CasesController extends Controller
         }
 
         
-        return view('admin.patients.case-records.list');
+        return view('admin.patients.case-records.list', compact('pageTitle'));
     }
 
     public function create(){
+         $pageTitle = 'Add Cases';
         $patients = User::where('role','patient')->get();
         $symptoms = Symptom::get();
         $treatments = Treatment::get();
         $advices = Advice::get();
         $diagnoses = Diagnosis::get();
-        return view('admin.patients.case-records.create', compact('patients','symptoms','diagnoses','advices','treatments'));
+        return view('admin.patients.case-records.create', compact('patients','symptoms','diagnoses','advices','treatments','pageTitle'));
     }
 
     public function store(Request $request)
@@ -58,6 +60,7 @@ class CasesController extends Controller
 
     public function edit($id)
     {
+         $pageTitle = 'Edit Cases';
         $case = CaseRecord::findOrFail($id);
         return view('admin.patients.case-records.edit', [
             'case' => $case,
@@ -66,7 +69,7 @@ class CasesController extends Controller
             'diagnoses' => Diagnosis::all(),
             'advices' => Advice::all(),
             'treatments' => Treatment::all(),
-        ]);
+        ], compact('pageTitle'));
     }
     public function update(Request $request, $id)
     {

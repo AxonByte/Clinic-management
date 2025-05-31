@@ -13,6 +13,7 @@ class DoctorHolidayController extends Controller
     
     public function index(Request $request)
     {
+        $pageTitle = 'Doctor Holiday';
         $doctors = User::where('role','doctor')->get();
         if ($request->ajax()) {
             $data = DoctorHoliday::with('doctor');
@@ -35,7 +36,7 @@ class DoctorHolidayController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        return view('admin.doctors.holidays.holiday', compact('doctors'));
+        return view('admin.doctors.holidays.holiday', compact('doctors','pageTitle'));
     }
      public function store(Request $request)
     {

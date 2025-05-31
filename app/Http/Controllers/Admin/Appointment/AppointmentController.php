@@ -18,8 +18,9 @@ class AppointmentController extends Controller
 
     public function index()
     {
+         $pageTitle = 'Appointment List';
         $statuses = ['All', 'Pending Confirmation', 'Confirmed', 'Treated', 'Cancelled', 'Requested'];
-        return view('admin.appointments.index', compact('statuses'));
+        return view('admin.appointments.index', compact('statuses','pageTitle'));
     }
 
     public function getData($status)
@@ -59,9 +60,10 @@ class AppointmentController extends Controller
 
     public function create()
     {
+        $pageTitle = 'Add Appointment';
         $doctors = User::where('role','doctor')->get();
         $patients = User::where('role','patient')->get();
-        return view('admin.appointments.create', compact('doctors','patients'));
+        return view('admin.appointments.create', compact('doctors','patients','pageTitle'));
     }
 
     public function getVisitTypes($doctor_id)
@@ -163,11 +165,12 @@ class AppointmentController extends Controller
 
     public function edit($id)
     {
+        $pageTitle = 'Edit Appointment';
         $appointment = Appointment::findOrFail($id);
         $doctors = User::where('role','doctor')->get();
         $patients = User::where('role','patient')->get();
         $visitTypes = DoctorVisit::where('doctor_id', $appointment->doctor_id)->get();
-        return view('admin.appointments.edit',compact('doctors','patients','appointment','visitTypes'));
+        return view('admin.appointments.edit',compact('doctors','patients','appointment','visitTypes','pageTitle'));
     }
 
     public function update(Request $request, Appointment $appointment)
@@ -220,6 +223,7 @@ class AppointmentController extends Controller
 
     public function todaysAppointment(Request $request)
     {
+        $pageTitle = 'Todays Appointment';
         if ($request->ajax()) {
             $query = Appointment::with(['patient', 'doctor', 'visit', 'payment'])
                 ->whereDate('appointment_date', today()); // ✅ Date-only comparison
@@ -248,10 +252,11 @@ class AppointmentController extends Controller
                 ->make(true);
         }
 
-        return view('admin.appointments.today_appointment');
+        return view('admin.appointments.today_appointment', compact('pageTitle'));
     }
     public function upcomingAppointment(Request $request)
     {
+        $pageTitle = 'Upcoming Appointment';
         if ($request->ajax()) {
             $query = Appointment::with(['patient', 'doctor', 'visit', 'payment'])
                 ->whereDate('appointment_date', '>', today()); // ✅ Date-only comparison
@@ -280,11 +285,12 @@ class AppointmentController extends Controller
                 ->make(true);
         }
 
-        return view('admin.appointments.upcoming_appointment');
+        return view('admin.appointments.upcoming_appointment', compact('pageTitle'));
     }
 
     public function requestedAppointment(Request $request)
     {
+        $pageTitle = 'Requested Appointment';
         if ($request->ajax()) {
             $query = Appointment::with(['patient', 'doctor', 'visit', 'payment'])
                 ->where('status', '=', 'Requested');
@@ -313,7 +319,7 @@ class AppointmentController extends Controller
                 ->make(true);
         }
 
-        return view('admin.appointments.requested_appointment');
+        return view('admin.appointments.requested_appointment',compact('pageTitle'));
     }
 
     public function calendar(){

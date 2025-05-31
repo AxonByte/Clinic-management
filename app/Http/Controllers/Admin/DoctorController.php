@@ -13,6 +13,7 @@ use Yajra\DataTables\DataTables;
 class DoctorController extends Controller
 {
     public function index(Request $request){
+        $pageTitle = 'List of Doctor';
         $department = Department::get();
         if ($request->ajax()) {
         $departments = User::with('department')->where('role','doctor');
@@ -29,8 +30,7 @@ class DoctorController extends Controller
                     return '-';
                 })
                 ->addColumn('action', function ($row) {
-                    // $photoUrl = $row->photo ? asset('storage/app/public/' . $row->photo) : '';
-                    $photoPath = str_replace('public/', '', $row->photo); // ensures `photos/filename.jpg`
+                    $photoPath = str_replace('public/', '', $row->photo);
                     $photoUrl = $row->photo ? asset('storage/' . $photoPath) : '';
 
                     $signaturePath = str_replace('public/', '', $row->sign);
@@ -75,16 +75,16 @@ class DoctorController extends Controller
             ->make(true);
       }
 
-        return view('admin.doctors.index',compact('department'));
+        return view('admin.doctors.index',compact('department','pageTitle'));
     }
 
     public function create(){
+         $pageTitle = 'Add New Doctor';
          $department = Department::get();
-        return view('admin.doctors.create',compact('department'));
+        return view('admin.doctors.create',compact('department','pageTitle'));
     }
 
     public function store(Request $request){
-        // dd($request->all());
        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -96,7 +96,6 @@ class DoctorController extends Controller
             'signature' => 'required|mimes:jpg,jpeg,png|max:2048',
             'photo' => 'nullable|mimes:jpg,jpeg,png|max:2048',
         ]);
-        // dd($request->all());
         $photoPath = null;
         $signaturePath = null;
         if ($request->hasFile('photo')) {
@@ -107,7 +106,6 @@ class DoctorController extends Controller
             $signaturePath = $request->file('signature')->store('signatures', 'public');
         }
         try {
-            // dd($request->all());
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -120,7 +118,6 @@ class DoctorController extends Controller
             'sign' => $signaturePath,
             'role' => 'doctor',
         ]);
-//  dd($request->all());
          return redirect('admin/doctor/')->with('success', 'Doctor added successfully!');
         } catch (Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());

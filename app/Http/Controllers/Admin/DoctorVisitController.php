@@ -14,6 +14,7 @@ class DoctorVisitController extends Controller
 
     public function index(Request $request)
     {
+        $pageTitle = 'Doctor Visit';
         $doctors = User::where('role','doctor')->get();
         if ($request->ajax()) {
             $data = DoctorVisit::with('doctor');
@@ -40,7 +41,7 @@ class DoctorVisitController extends Controller
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        return view('admin.doctors.doctor_visits.doctor_visits_list', compact('doctors'));
+        return view('admin.doctors.doctor_visits.doctor_visits_list', compact('doctors','pageTitle'));
     }
 
     public function store(Request $request)

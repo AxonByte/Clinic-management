@@ -11,6 +11,7 @@ class AdviceController extends Controller
 {
     public function index(Request $request)
     {
+         $pageTitle = 'Advice List';
         if ($request->ajax()) {
             $data = Advice::latest()->get();
             return DataTables::of($data)
@@ -25,7 +26,7 @@ class AdviceController extends Controller
                 ->make(true);
         }
 
-        return view('admin.patients.advices.list');
+        return view('admin.patients.advices.list', compact('pageTitle'));
     }
 
     public function store(Request $request)

@@ -4,7 +4,10 @@
   <head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Rich Care</title>
+      {{-- <title>Rich Care</title> --}}
+      <title>{{ $pageTitle ?? 'Rich Care' }}</title>
+
+      
       
       <!-- Favicon -->
      <link rel="shortcut icon" href="{{ asset('assets/images/RCH_Logo.png') }}" height="60px" />

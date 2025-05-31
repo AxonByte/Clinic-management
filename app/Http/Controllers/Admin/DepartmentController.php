@@ -10,6 +10,7 @@ use Yajra\DataTables\DataTables;
 class DepartmentController extends Controller
 {
     public function index(Request $request){
+        $pageTitle = 'Department';
         if ($request->ajax()) {
         $departments = Department::query();
 
@@ -22,18 +23,17 @@ class DepartmentController extends Controller
                         data-name="' . htmlspecialchars($row->name, ENT_QUOTES) . '" 
                         data-description="' . htmlspecialchars($row->description, ENT_QUOTES) . '"
                     >
-                        <i class="bi bi-pencil-square"></i>
+                        <i class="bi bi-pencil-square">Edit</i>
                     </button>
-                    <button class="btn btn-sm btn-success"><i class="bi bi-people-fill"></i></button>
                     <button class="btn btn-sm btn-danger delete-btn" data-id="'.$row->id.'">
-                        <i class="bi bi-trash"></i>
+                        <i class="bi bi-trash">Delete</i>
                     </button>
                 ';
             })
             ->rawColumns(['action'])
             ->make(true);
       }
-       return view('admin.department.index');
+       return view('admin.department.index', compact('pageTitle'));
     }
 
     public function store(Request $request)

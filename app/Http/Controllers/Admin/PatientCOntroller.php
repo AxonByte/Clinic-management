@@ -12,6 +12,7 @@ use DataTables;
 class PatientCOntroller extends Controller
 {
     public function index(Request $request){
+        $pageTitle = 'Patient List';
         $doctors = User::with('detail')->where('role','doctor')->get();
          if ($request->ajax()) {
         $departments = User::where('role','patient');
@@ -48,7 +49,7 @@ class PatientCOntroller extends Controller
             ->rawColumns(['action','photo'])
             ->make(true);
       }
-        return view('admin.patients.patient_list', compact('doctors'));
+        return view('admin.patients.patient_list', compact('doctors','pageTitle'));
     }
 
    public function store(Request $request)
@@ -108,101 +109,105 @@ class PatientCOntroller extends Controller
         return redirect()->back()->with('success', 'Patient registered successfully.');
     }
 
-    public function edit(Request $request, $id){
+    public function edit(Request $request, $id)
+    {
+        $pageTitle = 'Edit Patient';
         $doctors = User::with('detail')->where('role','doctor')->get();
         $patient = User::with('detail')->findOrFail($id);
-        return view('admin.patients.edit', compact('patient','doctors'));
+        return view('admin.patients.edit', compact('patient','doctors','pageTitle'));
     }
-  
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $id,
-        'password' => 'nullable|min:6',
-        'dob' => 'nullable|date',
-        'n_id' => 'nullable|string|max:20',
-        'gender' => 'nullable|in:male,female',
-        'blood_group' => 'nullable|in:A+,A-,B+,B-,O+,O-,AB+,AB-',
-        'height' => 'nullable',
-        'weight' => 'nullable',
-        'allergies' => 'nullable|string',
-        'medical_history' => 'nullable|string',
-        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'emergency_contact_person' => 'nullable|string|max:255',
-        'emergency_contact' => 'nullable|string|max:20',
-        'doctor_id' => 'nullable|exists:users,id',
-        'address' => 'nullable|string',
-    ]);
-
-    $patient = User::findOrFail($id);
-
-    // Handle photo replacement
-    if ($request->hasFile('photo')) {
-        // Delete old photo if exists
-        if ($patient->photo && Storage::disk('public')->exists($patient->photo)) {
-            Storage::disk('public')->delete($patient->photo);
-        }
-
-        // Store new photo
-        $photoPath = $request->file('photo')->store('photos', 'public');
-        $patient->photo = $photoPath;
-    }
-
-    // Update User
-    $patient->name = $request->name;
-    $patient->email = $request->email;
-   
-    $patient->phone = $request->phone;
-    $patient->doctor_id = $request->doctor_id;
-    $patient->address = $request->address;
-    $patient->save();
-
-    // Update or Create UserDetail
-    $detail = $patient->detail()->first();
-    if (!$detail) {
-        $detail = new UserDetail();
-        $detail->user_id = $patient->id;
-    }
-
-    $detail->dob = $request->dob;
-    $detail->nationalid = $request->n_id;
-    $detail->gender = $request->gender;
-    $detail->blood_group = $request->blood_group;
-    $detail->height = $request->height;
-    $detail->weight = $request->weight;
-    $detail->allergies = $request->allergies;
-    $detail->medical_history = $request->medical_history;
-    $detail->emergency_contact_person = $request->emergency_contact_person;
-    $detail->emergency_contact = $request->emergency_contact;
-    $detail->sms = $request->has('sms');
-    $detail->save();
-
-    return redirect()->route('admin.patient.index')->with('success', 'Patient updated successfully.');
-}
-
- public function destroy($id)
+    
+    public function update(Request $request, $id)
     {
-        try {
-            $patient = User::findOrFail($id);
-            if ($patient->photo) {
-                $photoPath = public_path('storage/' . str_replace('public/', '', $patient->photo));
-                if (file_exists($photoPath)) {
-                    unlink($photoPath);
-                }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'nullable|min:6',
+            'dob' => 'nullable|date',
+            'n_id' => 'nullable|string|max:20',
+            'gender' => 'nullable|in:male,female',
+            'blood_group' => 'nullable|in:A+,A-,B+,B-,O+,O-,AB+,AB-',
+            'height' => 'nullable',
+            'weight' => 'nullable',
+            'allergies' => 'nullable|string',
+            'medical_history' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'emergency_contact_person' => 'nullable|string|max:255',
+            'emergency_contact' => 'nullable|string|max:20',
+            'doctor_id' => 'nullable|exists:users,id',
+            'address' => 'nullable|string',
+        ]);
+
+        $patient = User::findOrFail($id);
+
+        // Handle photo replacement
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($patient->photo && Storage::disk('public')->exists($patient->photo)) {
+                Storage::disk('public')->delete($patient->photo);
             }
-          
-            $patient->delete();
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+
+            // Store new photo
+            $photoPath = $request->file('photo')->store('photos', 'public');
+            $patient->photo = $photoPath;
         }
+
+        // Update User
+        $patient->name = $request->name;
+        $patient->email = $request->email;
+    
+        $patient->phone = $request->phone;
+        $patient->doctor_id = $request->doctor_id;
+        $patient->address = $request->address;
+        $patient->save();
+
+        // Update or Create UserDetail
+        $detail = $patient->detail()->first();
+        if (!$detail) {
+            $detail = new UserDetail();
+            $detail->user_id = $patient->id;
+        }
+
+        $detail->dob = $request->dob;
+        $detail->nationalid = $request->n_id;
+        $detail->gender = $request->gender;
+        $detail->blood_group = $request->blood_group;
+        $detail->height = $request->height;
+        $detail->weight = $request->weight;
+        $detail->allergies = $request->allergies;
+        $detail->medical_history = $request->medical_history;
+        $detail->emergency_contact_person = $request->emergency_contact_person;
+        $detail->emergency_contact = $request->emergency_contact;
+        $detail->sms = $request->has('sms');
+        $detail->save();
+
+        return redirect()->route('admin.patient.index')->with('success', 'Patient updated successfully.');
     }
 
-    public function show(Request $request, $id){
+     public function destroy($id)
+        {
+            try {
+                $patient = User::findOrFail($id);
+                if ($patient->photo) {
+                    $photoPath = public_path('storage/' . str_replace('public/', '', $patient->photo));
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
+                }
+            
+                $patient->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            }
+        }
+
+    public function show(Request $request, $id)
+    {
+        $pageTitle = 'Patient Details';
         $patient = User::with('detail')->findOrFail($id);
         $patient_doctor = User::where('id', $patient->doctor_id)->pluck('name');
-        return view('admin.patients.show', compact('patient','patient_doctor'));
+        return view('admin.patients.show', compact('patient','patient_doctor','pageTitle'));
 
     }
 }

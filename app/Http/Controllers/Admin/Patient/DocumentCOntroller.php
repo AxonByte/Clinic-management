@@ -13,6 +13,7 @@ class DocumentCOntroller extends Controller
 {
         public function index(Request $request)
         {
+             $pageTitle = 'Patient Document';
             if ($request->ajax()) {
                 $data = Document::with('patient')->select('documents.*')->latest()->get();
                 return DataTables::of($data)
@@ -60,7 +61,7 @@ class DocumentCOntroller extends Controller
             }
 
             $patients = User::where('role','patient')->get();
-            return view('admin.patients.documents.list', compact('patients'));
+            return view('admin.patients.documents.list', compact('patients','pageTitle'));
         }
       
 
@@ -68,7 +69,6 @@ class DocumentCOntroller extends Controller
     {
         $isUpdate = $request->filled('id');
         
-        // Validation rules
         $request->validate([
             'patient_id' => 'required|exists:users,id',
             'title' => 'required|string',
@@ -77,9 +77,7 @@ class DocumentCOntroller extends Controller
 
         $filePath = null;
 
-        // Check for file upload
         if ($request->hasFile('file')) {
-            // If updating, delete old file
             if ($isUpdate) {
                 $document = Document::findOrFail($request->id);
                 if ($document->file_path && Storage::disk('public')->exists($document->file_path)) {
@@ -87,21 +85,18 @@ class DocumentCOntroller extends Controller
                 }
             }
 
-            // Upload new file
             $filePath = $request->file('file')->store('documents', 'public');
         }
 
         if ($isUpdate) {
-            // Update record
             $document = Document::findOrFail($request->id);
             $document->update([
                 'patient_id' => $request->patient_id,
                 'title' => $request->title,
-                'file_path' => $filePath ?? $document->file_path, // retain old path if no new file
+                'file_path' => $filePath ?? $document->file_path,
             ]);
             $message = 'Document updated successfully';
         } else {
-            // Create record
             Document::create([
                 'patient_id' => $request->patient_id,
                 'title' => $request->title,
@@ -130,13 +125,9 @@ class DocumentCOntroller extends Controller
       public function download(Document $document)
         {
             $filePath = $document->file_path;
-
-            // Ensure the file exists
             if (!Storage::disk('public')->exists($filePath)) {
                 abort(404, 'File not found.');
             }
-
-            // Get the filename for download
             $filename = pathinfo($filePath, PATHINFO_BASENAME);
 
             return Storage::disk('public')->download($filePath, $filename);

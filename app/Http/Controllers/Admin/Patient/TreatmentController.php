@@ -11,6 +11,7 @@ class TreatmentController extends Controller
 {
     public function index(Request $request)
     {
+         $pageTitle = 'Treatment List';
         if ($request->ajax()) {
             $data = Treatment::latest()->get();
             return DataTables::of($data)
@@ -25,7 +26,7 @@ class TreatmentController extends Controller
                 ->make(true);
         }
 
-        return view('admin.patients.treatment.list');
+        return view('admin.patients.treatment.list', compact('pageTitle'));
     }
 
     public function store(Request $request)
