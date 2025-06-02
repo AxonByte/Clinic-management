@@ -30,8 +30,10 @@
       <!-- RTL Css -->
       <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/>
        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
-
+      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
       {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" /> --}}
+      @stack('styles')
+
       <style>
         body { margin: 0; height: 100%; overflow-x: hidden;
     overflow-y: auto;}
@@ -67,12 +69,13 @@
          @include('partials.footer')
     </main>
 <!-- Order matters -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <!-- Library Bundle Script -->
     <script src="{{ asset('assets/js/core/libs.min.js')}}"></script>
     
@@ -133,7 +136,7 @@ function showMessage(type, message) {
         });
     }, 5000);
 }
-
 </script>
+@stack('scripts')
 </body>
 </html>

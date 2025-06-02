@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\Patient\DocumentCOntroller;
 use App\Http\Controllers\Admin\Appointment\AppointmentController;
 use App\Http\Controllers\Admin\Medicine\MedicineController;
 use App\Http\Controllers\Admin\Medicine\MedicineCategoryController;
+use App\Http\Controllers\Admin\Prescription\PrescriptionController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -138,10 +139,22 @@ Route::prefix('admin/')->name('admin.medicine.')->controller(MedicineController:
     Route::get('medicine/{id}/edit', 'edit')->name('edit');
     Route::put('medicine/{medicine}/update', 'update')->name('update');
     Route::delete('medicine/{id}', 'destroy')->name('destroy');
+    Route::put('medicine/{id}/update-quantity', 'updateQuantity')->name('updateQuantity');
+
     Route::get('/medicine/medicine-categories', [MedicineCategoryController::class,'index'])->name('medicine-categories.list');
     Route::post('/medicine/medicine-categories', [MedicineCategoryController::class,'store'])->name('medicine-categories.store');
+    Route::get('/medicine/medicine-categories/{id}/edit', [MedicineCategoryController::class,'edit'])->name('medicine-categories.edit');
 });
 
+Route::prefix('admin/')->name('admin.prescription.')->controller(PrescriptionController::class)->group(function () { 
+   Route::get('prescription', 'index')->name('index');
+    Route::get('prescription/create', 'create')->name('create');
+    Route::post('prescription', 'store')->name('store');
+    Route::get('prescription/{id}/edit', 'edit')->name('edit');
+    Route::put('prescription/{prescription}/update', 'update')->name('update');
+    Route::delete('prescription/{id}', 'destroy')->name('destroy');
+    Route::get('prescription/show/{id}', 'show')->name('show');
+});
 
 
 Route::middleware(['auth', 'role:superadmin'])->group(function () {

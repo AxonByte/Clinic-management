@@ -249,6 +249,15 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/prescription') ? 'active' : '' }}" aria-current="page" href="{{ route('admin.prescription.index')}}">
+                        <i class="icon">
+                            <img src="{{ asset('images/department-icon.png')}}" alt="" width="20px" height="25px">
+                        </i>
+                        <span class="item-name">Prescriptions</span>
+                    </a>
+                </li>
                 
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('admin/appointment*')  ? 'active' : '' }}" data-bs-toggle="collapse" href="#sidebar-appointment" role="button" aria-expanded="{{ Request::is('admin/appointment*') ? 'true' : 'false' }}" aria-controls="sidebar-appointment">
@@ -354,7 +363,7 @@
                         </i>
                     </a>
                     <ul class="sub-nav collapse {{ Request::is('admin/medicine*') ? 'show' : '' }}" id="sidebar-medicine" data-bs-parent="#sidebar-menu">
-                        {{-- <li class="nav-item">
+                       <li class="nav-item">
                             <a class="nav-link {{ Request::is('admin/medicine') ? 'active' : '' }}" href="{{ route('admin.medicine.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
@@ -380,7 +389,7 @@
                                 <i class="sidenav-mini-icon"> U </i>
                                 <span class="item-name">Add medicine</span>
                             </a>
-                        </li> --}}
+                        </li> 
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('admin/medicine/medicine-categories') ? 'active' : '' }}" href="{{ route('admin.medicine.medicine-categories.list')}}">
                                 <i class="icon">

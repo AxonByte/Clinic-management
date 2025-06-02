@@ -1,20 +1,17 @@
 
-
 @extends('layouts.app')
-
 @section('content')
 
 <div class="conatiner-fluid content-inner mt-n5 py-0">
-  
 
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
             <div class="card-header d-flex justify-content-between">
                <div class="header-title">
-                  <h4 class="card-title">Medicine Category</h4>
+                  <h4 class="card-title">Medicines</h4>
                </div>
-                <button class="btn btn-primary mb-3" id="createBtn">Add Category</button>
+                <button class="btn btn-primary mb-3" id="createBtn">Add Medicine</button>
             </div>
 
 

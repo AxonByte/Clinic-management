@@ -10,7 +10,8 @@ use Yajra\DataTables\Facades\DataTables;
 class MedicineCategoryController extends Controller
 {
       public function index(Request $request)
-    {
+      {
+        $pageTitle = 'Medicine Category';
         if ($request->ajax()) {
             $data = MedicineCategory::latest()->get();
             return DataTables::of($data)
@@ -24,16 +25,24 @@ class MedicineCategoryController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.medicine.category.index');
+        
+        return view('admin.medicine.category.index', compact('pageTitle'));
     }
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255']);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255'
+       ]);
         MedicineCategory::updateOrCreate(
             ['id' => $request->id],
-            ['name' => $request->name]
+            [
+                'name' => $request->name,
+                'description' => $request->description
+            ]
         );
+
         return response()->json(['success' => true]);
     }
 
