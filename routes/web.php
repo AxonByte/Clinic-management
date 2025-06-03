@@ -19,6 +19,9 @@ use App\Http\Controllers\Admin\Appointment\AppointmentController;
 use App\Http\Controllers\Admin\Medicine\MedicineController;
 use App\Http\Controllers\Admin\Medicine\MedicineCategoryController;
 use App\Http\Controllers\Admin\Prescription\PrescriptionController;
+use App\Http\Controllers\Admin\BedmanageMent\BedCategoryController;
+use App\Http\Controllers\Admin\BedmanageMent\BedController;
+use App\Http\Controllers\Admin\BedmanageMent\PatientAdmittController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -144,6 +147,7 @@ Route::prefix('admin/')->name('admin.medicine.')->controller(MedicineController:
     Route::get('/medicine/medicine-categories', [MedicineCategoryController::class,'index'])->name('medicine-categories.list');
     Route::post('/medicine/medicine-categories', [MedicineCategoryController::class,'store'])->name('medicine-categories.store');
     Route::get('/medicine/medicine-categories/{id}/edit', [MedicineCategoryController::class,'edit'])->name('medicine-categories.edit');
+    Route::delete('/medicine/medicine-categories/{id}', [MedicineCategoryController::class,'destroy'])->name('medicine-categories.destroy');
 });
 
 Route::prefix('admin/')->name('admin.prescription.')->controller(PrescriptionController::class)->group(function () { 
@@ -154,6 +158,25 @@ Route::prefix('admin/')->name('admin.prescription.')->controller(PrescriptionCon
     Route::put('prescription/{prescription}/update', 'update')->name('update');
     Route::delete('prescription/{id}', 'destroy')->name('destroy');
     Route::get('prescription/show/{id}', 'show')->name('show');
+});
+Route::prefix('admin/bedmanagement')->name('admin.bedmanagement.')->controller(BedController::class)->group(function () { 
+   Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('bed', 'store')->name('store');
+    Route::get('/{id}/edit', 'edit')->name('edit');
+    Route::put('bed/{id}/update', 'update')->name('update');
+    Route::delete('/{id}', 'destroy')->name('destroy');
+    Route::get('/bed-categories', [BedCategoryController::class,'index'])->name('categories.list');
+    Route::post('/bed-categories', [BedCategoryController::class,'store'])->name('categories.store');
+    Route::get('/bed-categories/{id}/edit', [BedCategoryController::class,'edit'])->name('categories.edit');
+    Route::delete('/bed-categories/{id}', [BedCategoryController::class,'destroy'])->name('categories.destroy');
+
+    Route::get('/admitted-patient', [PatientAdmittController::class,'index'])->name('admition.list');
+    Route::get('/admit-patient', [PatientAdmittController::class,'create'])->name('admition.create');
+    Route::post('/admitted-patient', [PatientAdmittController::class,'store'])->name('admition.store');
+    Route::get('/admitted-patient/{id}/edit', [PatientAdmittController::class,'edit'])->name('admition.edit');
+    Route::delete('/admitted-patient/{id}', [PatientAdmittController::class,'destroy'])->name('admition.destroy');
+});
 });
 
 
@@ -174,7 +197,4 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
 });
 Route::middleware(['auth', 'role:nurse'])->group(function () {
     Route::get('/nurse/dashboard', [NurseDashboardController::class, 'index'])->name('nurse.dashboard.index');
-});
-
-
 });

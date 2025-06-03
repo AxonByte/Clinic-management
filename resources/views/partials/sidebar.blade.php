@@ -403,8 +403,23 @@
                                 <span class="item-name">Medicine Category</span>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/medicine-categories/create') ? 'active' : '' }}" href="{{ route('admin.medicine-categories.create')}}">
+                       
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/bedmanagement*')  ? 'active' : '' }}" data-bs-toggle="collapse" href="#sidebar-bed" role="button" aria-expanded="{{ Request::is('admin/bedmanagement*') ? 'true' : 'false' }}" aria-controls="sidebar-bed">
+                         <img src="{{ asset('images/medicine-icon.png')}}" alt="" width="20px" height="25px">                                     
+                        <span class="item-name">Bed Management</span>
+                        <i class="right-icon">
+                            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </i>
+                    </a>
+                    <ul class="sub-nav collapse {{ Request::is('admin/bedmanagement*') ? 'show' : '' }}" id="sidebar-bed" data-bs-parent="#sidebar-menu">
+                       <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement/admitted-patient') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.admition.list') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -413,9 +428,35 @@
                                     </svg>
                                 </i>
                                 <i class="sidenav-mini-icon"> U </i>
-                                <span class="item-name">Add Category</span>
+                                <span class="item-name">All Admitted Patient</span>
                             </a>
-                        </li> --}}
+                        </li>
+                       <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Bed List</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement/bed-categories') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.categories.list')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Bed Category</span>
+                            </a>
+                        </li>
                        
                     </ul>
                 </li>

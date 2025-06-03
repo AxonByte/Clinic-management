@@ -9,15 +9,15 @@
          <div class="card">
             <div class="card-header d-flex justify-content-between">
                <div class="header-title">
-                  <h4 class="card-title">Category</h4>
+                  <h4 class="card-title">Bed Category</h4>
                </div>
-                <button class="btn btn-primary mb-3" id="createBtn">Add Medicine Category</button>
+                <button class="btn btn-primary mb-3" id="createBtn">Add Category</button>
             </div>
 
 
             <div class="card-body">
                <div class="table-responsive">
-                  <table id="madicineCategory" class="table table-striped" data-toggle="data-table">
+                  <table id="bedCategory" class="table table-striped" data-toggle="data-table">
                      <thead>
                         <tr>
                             <th>#</th>
@@ -46,7 +46,7 @@
         @csrf
         <input type="hidden" name="id" id="id">
         <div class="modal-content">
-            <div class="modal-header"><h5 class="modal-title">Add/Edit Medicine Category</h5></div>
+            <div class="modal-header"><h5 class="modal-title">Add/Edit Bed Category</h5></div>
             <div class="modal-body">
                 <label for="name" class="fw-bold text-secondary">Name</label>
                 <input type="text" name="name" class="form-control mb-2" placeholder="Name" required>
@@ -64,7 +64,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
  <script>
 $(function() {
-    let table = $('#madicineCategory').DataTable({
+    let table = $('#bedCategory').DataTable({
         processing: true,
         serverSide: true,
         destroy: true,
@@ -72,7 +72,7 @@ $(function() {
         paging: true,
         autoWidth: false,
         responsive: true,
-        ajax: '{{ route("admin.medicine.medicine-categories.list") }}',
+        ajax: '{{ route("admin.bedmanagement.categories.list") }}',
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'name' },
@@ -87,9 +87,9 @@ $(function() {
         $('#categoryModal').modal('show');
     });
 
-    $('#madicineCategory').on('click', '.editBtn', function() {
+    $('#bedCategory').on('click', '.editBtn', function() {
         let id = $(this).data('id');
-        $.get("{{ url('admin/medicine/medicine-categories') }}/" + id + "/edit", function(data) {
+        $.get("{{ url('admin/bedmanagement/bed-categories') }}/" + id + "/edit", function(data) {
             $('#id').val(data.id);
             $('input[name="name"]').val(data.name);
             $('input[name="code"]').val(data.code);
@@ -100,10 +100,10 @@ $(function() {
 
   $('#categoryForm').submit(function(e) {
     e.preventDefault();
-    $.post("{{ route('admin.medicine.medicine-categories.store') }}", $(this).serialize())
+    $.post("{{ route('admin.bedmanagement.categories.store') }}", $(this).serialize())
         .done(function(response) {
             $('#categoryModal').modal('hide');
-            $('#madicineCategory').DataTable().ajax.reload();
+            $('#bedCategory').DataTable().ajax.reload();
             showMessage('success', response.message || 'Saved successfully.');
         })
         .fail(function(xhr) {
@@ -117,15 +117,15 @@ $(function() {
   });
 
 
-    $('#madicineCategory').on('click', '.deleteBtn', function() {
+    $('#bedCategory').on('click', '.deleteBtn', function() {
     if (confirm("Are you sure want to delete this category?")) {
         let id = $(this).data('id');
         $.ajax({
-            url: "{{ url('admin/medicine/medicine-categories') }}/" + id,
+            url: "{{ url('admin/bedmanagement/bed-categories') }}/" + id,
             type: 'DELETE',
             data: { _token: '{{ csrf_token() }}' },
             success: function(response) {
-                $('#madicineCategory').DataTable().ajax.reload();
+                $('#bedCategory').DataTable().ajax.reload();
                 showMessage('success', response.message || 'Deleted successfully.');
             },
             error: function() {
