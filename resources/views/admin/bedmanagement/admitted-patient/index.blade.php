@@ -75,7 +75,7 @@ $(function() {
         ]
     });
 
-    $('#madicine').on('click', '.deleteBtn', function() {
+    $('#admitpatient').on('click', '.deleteBtn', function() {
     if (confirm("Are you sure want to delete this admit patient?")) {
         let id = $(this).data('id');
         $.ajax({

@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\Prescription\PrescriptionController;
 use App\Http\Controllers\Admin\BedmanageMent\BedCategoryController;
 use App\Http\Controllers\Admin\BedmanageMent\BedController;
 use App\Http\Controllers\Admin\BedmanageMent\PatientAdmittController;
+use App\Http\Controllers\Admin\BedmanageMent\PatientServicesController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboardController;
@@ -171,12 +172,41 @@ Route::prefix('admin/bedmanagement')->name('admin.bedmanagement.')->controller(B
     Route::get('/bed-categories/{id}/edit', [BedCategoryController::class,'edit'])->name('categories.edit');
     Route::delete('/bed-categories/{id}', [BedCategoryController::class,'destroy'])->name('categories.destroy');
 
+    Route::get('/patient-services', [PatientServicesController::class,'index'])->name('services.list');
+    Route::post('/patient-services', [PatientServicesController::class,'store'])->name('services.store');
+    Route::get('/patient-services/{id}/edit', [PatientServicesController::class,'edit'])->name('services.edit');
+    Route::delete('/patient-services/{id}', [PatientServicesController::class,'destroy'])->name('services.destroy');
+
     Route::get('/admitted-patient', [PatientAdmittController::class,'index'])->name('admition.list');
     Route::get('/admit-patient', [PatientAdmittController::class,'create'])->name('admition.create');
     Route::post('/admitted-patient', [PatientAdmittController::class,'store'])->name('admition.store');
     Route::get('/admitted-patient/{id}/edit', [PatientAdmittController::class,'edit'])->name('admition.edit');
+    Route::put('/admitted-patient/{id}/update', [PatientAdmittController::class,'updatePaiient'])->name('admition.update');
     Route::delete('/admitted-patient/{id}', [PatientAdmittController::class,'destroy'])->name('admition.destroy');
 });
+Route::prefix('admin/bedmanagement/admission')->name('admin.bedmanagement.admission.')->group(function () {
+    Route::get('{id}/daily-progress', [PatientAdmittController::class, 'dailyProgress'])->name('dailyprogress');
+     Route::post('{id}/daily-progress', [PatientAdmittController::class, 'storeDailyProgress'])->name('dailyprogress.store');
+    Route::get('/{admissionId}/{note}/edit', [PatientAdmittController::class, 'editdailyNotes'])->name('dailyprogress.edit');
+    Route::put('/{admissionId}/{note}/update', [PatientAdmittController::class, 'update'])->name('dailyprogress.update');
+
+    Route::get('{id}/medicines', [PatientAdmittController::class, 'medicines'])->name('medicines');
+    Route::post('{id}/medicines', [PatientAdmittController::class, 'medicineRecordStore'])->name('medicines.store');
+    Route::delete('{id}/medicines', [PatientAdmittController::class, 'deleteMedicineRecord'])->name('medicines.delete');
+
+    Route::get('{id}/service', [PatientAdmittController::class, 'services'])->name('service');
+    Route::post('{id}/service', [PatientAdmittController::class, 'serviceStore'])->name('service.store');
+    Route::delete('{id}/service', [PatientAdmittController::class, 'deleteService'])->name('service.delete');
+
+    Route::get('{id}/diagnostic-test', [PatientAdmittController::class, 'diagnosticTest'])->name('diagnostictest');
+    Route::get('{id}/bill-summary', [PatientAdmittController::class, 'billSummary'])->name('billsummary');
+
+    Route::get('{id}/discharge', [PatientAdmittController::class, 'discharge'])->name('discharge');
+    Route::post('/admission/{admitted_id}/discharge', [PatientAdmittController::class, 'dischargeStore'])->name('discharge.store');
+    Route::get('/{admissionId}/{note}/edit', [PatientAdmittController::class, 'editDescharge'])->name('discharge.edit');
+    Route::put('/{admissionId}/{note}/update', [PatientAdmittController::class, 'updateDescharge'])->name('discharge.update');
+});
+
 });
 
 
