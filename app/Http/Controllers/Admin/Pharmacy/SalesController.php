@@ -21,8 +21,10 @@ class SalesController extends Controller
             $data = Sales::with('items')->latest();
             return DataTables::of($data)
                 ->addColumn('items', fn($row) => $row->items->pluck('item_name')->join(', '))
+                ->addColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d M Y'))
                 ->addColumn('action', function ($row) {
-                    return view('pharmacy.sales.actions', compact('row'))->render();
+                    return ' <button data-id="'.$row->id.'" class="deleteBtn btn btn-sm btn-danger">Delete</button>';
+                    // return view('admin.pharmacy.sales.actions', compact('row'))->render();
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -41,15 +43,15 @@ class SalesController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        // $request->validate([
-        //     'items' => 'required|array|min:1',
-        //     'items.*.item_id' => 'required',
-        //     'items.*.item_name' => 'required|string',
-        //     'items.*.price' => 'required|numeric',
-        //     'items.*.quantity' => 'required|integer|min:1',
-        //     'subtotal' => 'required|numeric',
-        //     'total' => 'required|numeric',
-        // ]);
+        $request->validate([
+            'items' => 'required|array|min:1',
+            'items.*.item_id' => 'required',
+            'items.*.item_name' => 'required|string',
+            'items.*.price' => 'required|numeric',
+            'items.*.quantity' => 'required|integer|min:1',
+            'subtotal' => 'required|numeric',
+            'total' => 'required|numeric',
+        ]);
 //  dd($request->all());
         $sale = Sales::create([
             'subtotal' => $request->subtotal,

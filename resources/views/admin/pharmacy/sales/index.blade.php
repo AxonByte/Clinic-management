@@ -43,12 +43,14 @@
       </div>
    </div>
  </div>
+@endsection
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+@push('scripts')
  <script>
-<script>
 $(function () {
+    if ($.fn.DataTable.isDataTable('#salesTable')) {
+      $('#salesTable').DataTable().clear().destroy();
+    }
     $('#salesTable').DataTable({
         processing: true,
         serverSide: true,
@@ -63,45 +65,26 @@ $(function () {
             { data: 'action', orderable: false, searchable: false }
         ]
     });
-});
-  $('#categoryForm').submit(function(e) {
-    e.preventDefault();
-    $.post("{{ route('admin.medicine.medicine-categories.store') }}", $(this).serialize())
-        .done(function(response) {
-            $('#categoryModal').modal('hide');
-            $('#madicineCategory').DataTable().ajax.reload();
-            showMessage('success', response.message || 'Saved successfully.');
-        })
-        .fail(function(xhr) {
-            let errors = xhr.responseJSON.errors;
-            let message = 'Something went wrong.';
-            if (errors) {
-                message = Object.values(errors).map(msgArr => msgArr[0]).join(' ');
-            }
-            showMessage('danger', message);
-        });
-  });
 
-
-    $('#madicineCategory').on('click', '.deleteBtn', function() {
-    if (confirm("Are you sure want to delete this category?")) {
-        let id = $(this).data('id');
-        $.ajax({
-            url: "{{ url('admin/medicine/medicine-categories') }}/" + id,
-            type: 'DELETE',
-            data: { _token: '{{ csrf_token() }}' },
-            success: function(response) {
-                $('#madicineCategory').DataTable().ajax.reload();
-                showMessage('success', response.message || 'Deleted successfully.');
-            },
-            error: function() {
-                showMessage('danger', 'Error deleting data.');
-            }
-        });
-    }
+    $('#salesTable').on('click', '.deleteBtn', function() {
+        if (confirm("Are you sure want to delete this sales?")) {
+            let id = $(this).data('id');
+            $.ajax({
+                url: "{{ url('admin/pharmacy/sales') }}/" + id,
+                type: 'DELETE',
+                data: { _token: '{{ csrf_token() }}' },
+                success: function(response) {
+                    $('#salesTable').DataTable().ajax.reload();
+                    showMessage('success', response.message || 'Deleted successfully.');
+                },
+                error: function() {
+                    showMessage('danger', 'Error deleting data.');
+                }
+            });
+        }
+   });
 });
-
-});
+ 
 </script>
- @endsection
+ @endpush
 
