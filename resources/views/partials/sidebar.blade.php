@@ -352,61 +352,7 @@
                     </ul>
                 </li>
                 
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('admin/medicine*')  ? 'active' : '' }}" data-bs-toggle="collapse" href="#sidebar-medicine" role="button" aria-expanded="{{ Request::is('admin/medicine*') ? 'true' : 'false' }}" aria-controls="sidebar-medicine">
-                         <img src="{{ asset('images/medicine-icon.png')}}" alt="" width="20px" height="25px">                                     
-                        <span class="item-name">Medicine</span>
-                        <i class="right-icon">
-                            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </i>
-                    </a>
-                    <ul class="sub-nav collapse {{ Request::is('admin/medicine*') ? 'show' : '' }}" id="sidebar-medicine" data-bs-parent="#sidebar-menu">
-                       <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/medicine') ? 'active' : '' }}" href="{{ route('admin.medicine.index') }}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> U </i>
-                                <span class="item-name">All medicines</span>
-                            </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/medicine/create') ? 'active' : '' }}" href="{{ route('admin.medicine.create')}}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> U </i>
-                                <span class="item-name">Add medicine</span>
-                            </a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('admin/medicine/medicine-categories') ? 'active' : '' }}" href="{{ route('admin.medicine.medicine-categories.list')}}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> U </i>
-                                <span class="item-name">Medicine Category</span>
-                            </a>
-                        </li>
-                       
-                    </ul>
-                </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('admin/bedmanagement*')  ? 'active' : '' }}" data-bs-toggle="collapse" href="#sidebar-bed" role="button" aria-expanded="{{ Request::is('admin/bedmanagement*') ? 'true' : 'false' }}" aria-controls="sidebar-bed">
                          <img src="{{ asset('images/medicine-icon.png')}}" alt="" width="20px" height="25px">                                     
@@ -473,6 +419,156 @@
                        
                     </ul>
                 </li>
+
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/pharmacy*')  ? 'active' : '' }}" data-bs-toggle="collapse" href="#sidebar-pharmacy" role="button" aria-expanded="{{ Request::is('admin/bedmanagement*') ? 'true' : 'false' }}" aria-controls="sidebar-pharmacy">
+                         <img src="{{ asset('images/medicine-icon.png')}}" alt="" width="20px" height="25px">                                     
+                        <span class="item-name">Pharmacy</span>
+                        <i class="right-icon">
+                            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </i>
+                    </a>
+                    <ul class="sub-nav collapse {{ Request::is('admin/Pharmacy*') ? 'show' : '' }}" id="sidebar-pharmacy" data-bs-parent="#sidebar-menu">
+                       <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement/admitted-patient') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.admition.list') }}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Dashboard</span>
+                            </a>
+                        </li>
+                       <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/pharmacy/sales') ? 'active' : '' }}" href="{{ route('admin.pharmacy.sales.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Sales</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/pharmacy/sales/create') ? 'active' : '' }}" href="{{ route('admin.pharmacy.sales.create')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Add Sales</span>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement/patient-services') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.services.list')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Expence</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement/patient-services') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.services.list')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Add Expence</span>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/bedmanagement/patient-services') ? 'active' : '' }}" href="{{ route('admin.bedmanagement.services.list')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Expence Categories</span>
+                            </a>
+                        </li> --}}
+                       
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('admin/medicine*')  ? 'active' : '' }}" data-bs-toggle="collapse" href="#sidebar-medicine" role="button" aria-expanded="{{ Request::is('admin/medicine*') ? 'true' : 'false' }}" aria-controls="sidebar-medicine">
+                         <img src="{{ asset('images/medicine-icon.png')}}" alt="" width="20px" height="25px">                                     
+                        <span class="item-name">Medicine</span>
+                        <i class="right-icon">
+                            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </i>
+                    </a>
+                    <ul class="sub-nav collapse {{ Request::is('admin/medicine*') ? 'show' : '' }}" id="sidebar-medicine" data-bs-parent="#sidebar-menu">
+                       <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/medicine') ? 'active' : '' }}" href="{{ route('admin.medicine.index') }}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">All medicines</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/medicine/create') ? 'active' : '' }}" href="{{ route('admin.medicine.create')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Add medicine</span>
+                            </a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('admin/medicine/medicine-categories') ? 'active' : '' }}" href="{{ route('admin.medicine.medicine-categories.list')}}">
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
+                                <i class="sidenav-mini-icon"> U </i>
+                                <span class="item-name">Medicine Category</span>
+                            </a>
+                        </li>
+                       
+                    </ul>
+                </li>
+                
 
             </ul>
             <!-- Sidebar Menu End -->        </div>

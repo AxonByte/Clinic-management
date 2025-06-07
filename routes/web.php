@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\Prescription\PrescriptionController;
 use App\Http\Controllers\Admin\BedmanageMent\BedCategoryController;
 use App\Http\Controllers\Admin\BedmanageMent\BedController;
 use App\Http\Controllers\Admin\BedmanageMent\PatientAdmittController;
+use App\Http\Controllers\Admin\Pharmacy\SalesController;
 use App\Http\Controllers\Admin\BedmanageMent\PatientServicesController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
@@ -187,8 +188,8 @@ Route::prefix('admin/bedmanagement')->name('admin.bedmanagement.')->controller(B
 Route::prefix('admin/bedmanagement/admission')->name('admin.bedmanagement.admission.')->group(function () {
     Route::get('{id}/daily-progress', [PatientAdmittController::class, 'dailyProgress'])->name('dailyprogress');
      Route::post('{id}/daily-progress', [PatientAdmittController::class, 'storeDailyProgress'])->name('dailyprogress.store');
-    Route::get('/{admissionId}/{note}/edit', [PatientAdmittController::class, 'editdailyNotes'])->name('dailyprogress.edit');
-    Route::put('/{admissionId}/{note}/update', [PatientAdmittController::class, 'update'])->name('dailyprogress.update');
+    Route::get('{admissionId}/dailyprogress/{noteId}/edit', [PatientAdmittController::class, 'editdailyNotes'])->name('dailyprogress.edit');
+    Route::put('/{admissionId}/dailyprogress/{noteId}/update', [PatientAdmittController::class, 'update'])->name('dailyprogress.update');
 
     Route::get('{id}/medicines', [PatientAdmittController::class, 'medicines'])->name('medicines');
     Route::post('{id}/medicines', [PatientAdmittController::class, 'medicineRecordStore'])->name('medicines.store');
@@ -205,6 +206,9 @@ Route::prefix('admin/bedmanagement/admission')->name('admin.bedmanagement.admiss
     Route::post('/admission/{admitted_id}/discharge', [PatientAdmittController::class, 'dischargeStore'])->name('discharge.store');
     Route::get('/{admissionId}/{note}/edit', [PatientAdmittController::class, 'editDescharge'])->name('discharge.edit');
     Route::put('/{admissionId}/{note}/update', [PatientAdmittController::class, 'updateDescharge'])->name('discharge.update');
+});
+Route::prefix('admin/pharmacy')->name('admin.pharmacy.')->group(function () {
+    Route::resource('sales', \App\Http\Controllers\Admin\Pharmacy\SalesController::class);
 });
 
 });
