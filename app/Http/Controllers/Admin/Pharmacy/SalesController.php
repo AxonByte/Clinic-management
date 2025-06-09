@@ -23,7 +23,10 @@ class SalesController extends Controller
                 ->addColumn('items', fn($row) => $row->items->pluck('item_name')->join(', '))
                 ->addColumn('created_at', fn($row) => \Carbon\Carbon::parse($row->created_at)->format('d M Y'))
                 ->addColumn('action', function ($row) {
-                    return ' <button data-id="'.$row->id.'" class="deleteBtn btn btn-sm btn-danger">Delete</button>';
+                    return '
+                     <button data-id="'.$row->id.'" class="deleteBtn btn btn-sm btn-danger">Delete</button>
+                     <button data-id="'.$row->id.'" class="editBtn btn btn-sm btn-primary">Edit</button>'
+                    ;
                     // return view('admin.pharmacy.sales.actions', compact('row'))->render();
                 })
                 ->rawColumns(['action'])
@@ -72,10 +75,39 @@ class SalesController extends Controller
         return redirect()->route('admin.pharmacy.sales.index')->with('success', 'Sale recorded.');
     }
 
-    public function edit(Sales $sale)
+//     public function edit($id)
+//     {
+//         $sale = Sales::with('items')->findOrFail($id);
+// //    dd($sale)
+// ;        $saleItems = $sale->items->mapWithKeys(function ($item) {
+//             return [
+//                 $item->medicine_id => [
+//                     'quantity' => $item->quantity,
+//                     'price' => $item->price,
+//                 ]
+//             ];
+//         });
+
+//         $medicines = Medicine::all();
+//         return view('admin.pharmacy.sales.create', compact('sale', 'medicines', 'saleItems'));
+//     }
+
+    public function edit($id)
     {
-        $sale->load('items');
-        return view('pharmacy.sales.edit', compact('sale'));
+        $sale = Sales::with('items')->findOrFail($id);
+        $medicines = Medicine::all();
+        // Convert sale items into format for JavaScript
+        $saleItems = $sale->items->mapWithKeys(function ($item) {
+            return [$item->item_id => [
+                'quantity' => $item->quantity,
+            ]];
+        });
+
+        return view('admin.pharmacy.sales.create', [
+            'sale' => $sale,
+            'saleItems' => $saleItems,
+            'medicines' => $medicines,
+        ]);
     }
 
     public function update(Request $request, Sales $sale)

@@ -83,6 +83,13 @@ $(function () {
             });
         }
    });
+
+   $(document).on('click', '.editBtn', function () {
+      var id = $(this).data('id');
+      window.location.href = "/admin/pharmacy/sales/" + id + "/edit";
+   });
+
+
 });
  
 </script>
