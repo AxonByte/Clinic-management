@@ -11,7 +11,7 @@ class Department extends Model
 
     protected $table = 'departments';
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'hospital_id'];
 
     public function users()
     {

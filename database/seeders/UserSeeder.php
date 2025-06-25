@@ -18,44 +18,44 @@ class UserSeeder extends Seeder
            [
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',
-                'role' => 'admin',
+                'role' => 'admin','department_id' => '1',
                 'password' => Hash::make('admin123'),
            ],
 
             [
                 'name' => 'Super Admin',
                 'email' => 'superadmin@example.com',
-                'role' => 'superadmin',
+                'role' => 'superadmin','department_id' => '1',
                 'password' => Hash::make('123456'),
             ],
             [
                 'name' => 'Dr. John Doe',
-                'email' => 'doctor@example.com',
+                'email' => 'doctor@example.com','department_id' => '1',
                 'role' => 'doctor',
                 'password' => Hash::make('password'),
             ],
             [
                 'name' => 'Receptionist',
                 'email' => 'receptionist@example.com',
-                'role' => 'receptionist',
+                'role' => 'receptionist','department_id' => '1',
                 'password' => Hash::make('123456'),
             ],
             [
                 'name' => 'Accountant',
                 'email' => 'accountant@example.com',
-                'role' => 'accountant',
+                'role' => 'accountant','department_id' => '1',
                 'password' => Hash::make('123456'),
             ],
             [
                 'name' => 'Patient',
                 'email' => 'patient@example.com',
-                'role' => 'patient',
+                'role' => 'patient','department_id' => '1',
                 'password' => Hash::make('123456'),
             ],
             [
                 'name' => 'Laboratorist',
                 'email' => 'laboratorist@example.com',
-                'role' => 'laboratorist',
+                'role' => 'laboratorist','department_id' => '1',
                 'password' => Hash::make('123456'),
             ],
             [
@@ -67,7 +67,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Nurse',
                 'email' => 'nurse@example.com',
-                'role' => 'nurse',
+                'role' => 'nurse', 'department_id' => '1',
                 'password' => Hash::make('123456'),
             ],
         ];

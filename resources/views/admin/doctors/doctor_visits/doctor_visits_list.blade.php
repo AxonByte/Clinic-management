@@ -107,7 +107,7 @@
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-                <script>
+                <script>const BASE_URL = "{{ url('/') }}";
                     $(document).ready(function() {
                         $('#doctorVisitTable').DataTable({
                             processing: true,
@@ -153,8 +153,8 @@
                             let formData = new FormData(this);
                             let visitId = $('#visit_id').val();
                             let url = visitId ?
-                                `/admin/doctor/doctor-visits/${visitId}` :
-                                `/admin/doctor/doctor-visits`;
+                                `${BASE_URL}/admin/doctor/doctor-visits/${visitId}` :
+                                `${BASE_URL}/admin/doctor/doctor-visits`;
 
                             if (visitId) {
                                 formData.append('_method', 'PUT'); // Spoof PUT for update

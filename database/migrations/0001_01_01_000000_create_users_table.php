@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('doctor_id');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
             $table->string('description')->nullable();
-            $table->string('phone')->nullable();
+     
             $table->string('sign')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

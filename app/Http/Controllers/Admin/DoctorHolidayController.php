@@ -16,7 +16,11 @@ class DoctorHolidayController extends Controller
         $pageTitle = 'Doctor Holiday';
         $doctors = User::where('role','doctor')->get();
         if ($request->ajax()) {
-            $data = DoctorHoliday::with('doctor');
+            
+ $data = DoctorHoliday::with('doctor')
+        ->whereHas('doctor', function ($q) {
+            $q->where('hospital_id', auth()->user()->hospital_id);
+        });
             return DataTables::of($data)
                ->addColumn('doctor_name', function($user) {
                     return $user->doctor_id ? $user->doctor->name : 'N/A';

@@ -9,14 +9,20 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use App\Models\Service;
+use App\Models\Hospital;
 
+use App\Models\SubscriptionPackage;
 class DoctorController extends Controller
 {
     public function index(Request $request){
         $pageTitle = 'List of Doctor';
         $department = Department::get();
         if ($request->ajax()) {
-        $departments = User::with('department')->where('role','doctor');
+      $departments = User::with('department')
+                   ->where('role', 'doctor')
+                   ->where('hospital_id', auth()->user()->hospital_id)
+                   ->get();
 
             return DataTables::of($departments)
                ->addIndexColumn() 
@@ -84,7 +90,7 @@ class DoctorController extends Controller
         return view('admin.doctors.create',compact('department','pageTitle'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request){ 
        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -106,7 +112,42 @@ class DoctorController extends Controller
             $signaturePath = $request->file('signature')->store('signatures', 'public');
         }
         try {
-        User::create([
+			if (auth()->check()) {
+   $hospitalId = auth()->user()->hospital_id;
+   $hospital = Hospital::find($hospitalId);
+   $subscriptionPackage = $hospital->subscription_package;
+   $package = SubscriptionPackage::where('package_name', $subscriptionPackage)->first();
+   
+   if (!$package) {
+    return redirect('admin/doctor/')->with('error', 'Subscription package not found!');
+}
+   
+   $doctorLimit = $package->doctor_limit;
+   $currentDoctorCount = User::where('role', 'doctor')
+                          ->where('hospital_id', $hospitalId)
+                          ->count();
+		if ($currentDoctorCount >= $doctorLimit) {
+    return redirect('admin/doctor/')->with('error', 'Doctor limit reached for this subscription package.');
+}
+		$servicesString = $request->has('services') 
+    ? implode(',', $request->services) 
+    : null;		  
+			dd([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' => Hash::make($request->password),
+    'phone' => $request->phone,
+    'address' => $request->address,
+    'department_id' => $request->department,
+    'description' => $request->description,
+    'photo' => $photoPath,
+    'hospital_id' => $hospitalId,
+    'sign' => $signaturePath,
+    'service_ids' => $servicesString,
+    'role' => 'doctor',
+    'is_super_admin' => 0,
+]); die();			  
+	     User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -114,10 +155,15 @@ class DoctorController extends Controller
             'address' => $request->address,
             'department_id' => $request->department,
             'description' => $request->description,
-            'photo' => $photoPath,
-            'sign' => $signaturePath,
-            'role' => 'doctor',
-        ]);
+            'photo' => $photoPath, 'hospital_id' =>$hospitalId,
+            'sign' => $signaturePath,'service_ids' => $servicesString, 
+            'role' => 'doctor','is_super_admin'=>0]); 
+} else {
+   
+
+}
+   
+    
          return redirect('admin/doctor/')->with('success', 'Doctor added successfully!');
         } catch (Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());
@@ -146,6 +192,7 @@ class DoctorController extends Controller
             $doctor->phone = $request->phone;
             $doctor->address = $request->address;
             $doctor->department_id = $request->department;
+			$doctor->hospital_id = $doctor->hospital_id;
             if ($request->filled('password')) {
             $doctor->password = Hash::make($request->password);
             }
@@ -206,5 +253,17 @@ class DoctorController extends Controller
         }
     }
     
+public function getServicesByDepartment(Request $request)
+{
+    $request->validate([
+        'department_id' => 'required|integer|exists:departments,id'
+    ]);
 
+    $services = Service::where('department_id', $request->department_id)
+                       ->select('id', 'name')
+                       ->orderBy('name')
+                       ->get();
+
+    return response()->json($services);
+}
 }

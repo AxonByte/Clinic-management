@@ -12,7 +12,7 @@ class DepartmentController extends Controller
     public function index(Request $request){
         $pageTitle = 'Department';
         if ($request->ajax()) {
-        $departments = Department::query();
+$departments = Department::where('hospital_id', auth()->user()->hospital_id)->get();
 
         return DataTables::of($departments)
             ->addColumn('action', function ($row) {
@@ -37,16 +37,16 @@ class DepartmentController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {  
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
 
-        try {
+        try {   $hospital_id=auth()->user()->hospital_id; 
             Department::create([
                 'name' => $request->name,
-                'description' => $request->description,
+                'description' => $request->description,'hospital_id' => $hospital_id,
             ]);
 
             return redirect()->back()->with('success', 'Department created successfully.');

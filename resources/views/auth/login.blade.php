@@ -74,13 +74,19 @@
                                  <div class="col-lg-12 d-flex justify-content-between">
                                     
                                     <a href="recoverpw.html">Forgot Password?</a>
-                                 </div>
+                                 </div>				   <div class="d-flex justify-content-center mt-3">
+   <p class="text-center">Don't have an account?
+      <a href="{{ route('register') }}" class="text-primary text-decoration-underline">Sign Up</a>
+   </p>
+</div>
                               </div>
                               <div class="d-flex justify-content-center">
                                  <button type="submit" class="btn btn-primary">Sign In</button>
                               </div>
                            
                            </form>
+		
+
                         </div>
                      </div>
                   </div>

@@ -30,11 +30,20 @@ use App\Http\Controllers\Laboratorist\DashboardController as LaboratoristDashboa
 use App\Http\Controllers\Patient\DashboardController as PatientDashboardController;
 use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
 use App\Http\Controllers\Nurse\DashboardController as NurseDashboardController;
-
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Superadmin\CategoryController;
+use App\Http\Controllers\Superadmin\SubcategoryController;
+use App\Http\Controllers\Superadmin\HospitalController;
+use App\Http\Controllers\SuperAdmin\SubscriptionPackageController;
+//use App\Http\Controllers\SuperAdmin\ServiceController;
+use App\Http\Controllers\Admin\ServiceController;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function() {
+    Route::resource('user', App\Http\Controllers\Admin\UserController::class);
+    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+});
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
@@ -60,6 +69,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/{id}', 'update')->name('update');
     Route::delete('/{id}', 'destroy')->name('destroy');
      Route::get('/show/{id}', 'show')->name('show');
+	 Route::get('/get-services-by-department', [DoctorController::class, 'getServicesByDepartment'])->name('doctor.get.services');
+
   });
 
   Route::prefix('admin/doctor')->name('admin.doctor.')->controller(DoctorVisitController::class)->group(function () {  
@@ -121,6 +132,10 @@ Route::prefix('admin/patient')->name('admin.patient.')->controller(DocumentCOntr
     Route::delete('documents/{id}', 'destroy')->name('documents.destroy');
     Route::get('documents/{document}/download','download')->name('documents.download');
 });
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('services', ServiceController::class);
+});
 Route::prefix('admin/')->name('admin.appointment.')->controller(AppointmentController::class)->group(function () { 
    Route::get('appointment', 'index')->name('index');
     Route::get('appointment/data/{status}', 'getData')->name('data');
@@ -135,7 +150,8 @@ Route::prefix('admin/')->name('admin.appointment.')->controller(AppointmentContr
     Route::get('appointment/todays', 'todaysAppointment')->name('todays');
     Route::get('appointment/upcoming', 'upcomingAppointment')->name('upcoming');
     Route::get('appointment/calendar', 'calendar')->name('calendar');
-    Route::get('appointment/request', 'requestedAppointment')->name('request');
+    Route::get('appointment/request', 'requestedAppointment')->name('request');  
+	//Route::get('get-visit-types', 'getVisitTypes')->name('getVisitTypes'); 
 });
 Route::prefix('admin/')->name('admin.medicine.')->controller(MedicineController::class)->group(function () { 
    Route::get('medicine', 'index')->name('index');
@@ -160,6 +176,8 @@ Route::prefix('admin/')->name('admin.prescription.')->controller(PrescriptionCon
     Route::put('prescription/{prescription}/update', 'update')->name('update');
     Route::delete('prescription/{id}', 'destroy')->name('destroy');
     Route::get('prescription/show/{id}', 'show')->name('show');
+	
+	
 });
 Route::prefix('admin/bedmanagement')->name('admin.bedmanagement.')->controller(BedController::class)->group(function () { 
    Route::get('/', 'index')->name('index');
@@ -232,3 +250,35 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
 Route::middleware(['auth', 'role:nurse'])->group(function () {
     Route::get('/nurse/dashboard', [NurseDashboardController::class, 'index'])->name('nurse.dashboard.index');
 });
+use App\Http\Controllers\Admin\RoleController;
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('roles', RoleController::class);
+});
+
+
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    
+    // User Management Routes
+    Route::resource('users', UserController::class);
+
+    // Optional: If you want a specific route for datatable AJAX listing
+    Route::get('users/list/ajax', [UserController::class, 'index'])->name('users.list');
+
+});
+
+
+
+
+Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::resource('subscription_packages', SubscriptionPackageController::class);
+	  Route::resource('categories', CategoryController::class);
+	  Route::resource('subcategories', SubcategoryController::class);
+	 //Route::resource('services', ServiceController::class);
+});
+
+Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::resource('hospitals', HospitalController::class);
+});
+Route::get('/register', [AuthRegisterController::class, 'showRegistrationForm'])->name('register');
+

@@ -177,8 +177,9 @@
     </div>
     </div>
     </div>
-    
+   
 <script>
+   const BASE_URL = "{{ url('/') }}";
     document.getElementById('doctor_id').addEventListener('change', function () {
         const doctorId = this.value;
         const visitTypeSelect = document.getElementById('visit_type');
@@ -189,7 +190,7 @@
             return;
         }
 
-        fetch(`/admin/get-visit-types/${doctorId}`)
+        fetch(`${BASE_URL}/admin/get-visit-types/${doctorId}`)
             .then(response => response.json())
             .then(data => {
                 visitTypeSelect.innerHTML = '<option value="">-- Select Visit Type --</option>';
@@ -214,12 +215,11 @@ document.getElementById('visit_type').addEventListener('change', function () {
     const doctorId = document.getElementById('doctor_id').value;
     const visitTypeId = this.value;
     const visitChargeInput = document.getElementById('visit_charge');
-    const discountInput = document.getElementById('discount');
     const totalAmountInput = document.getElementById('total_amount');
     visitChargeInput.value = 'Loading...';
 
     if (doctorId && visitTypeId) {
-        fetch(`/admin/get-visit-charge/${doctorId}/${visitTypeId}`)
+        fetch(`${BASE_URL}/admin/get-visit-charge/${doctorId}/${visitTypeId}`)
             .then(res => res.json())
             .then(data => {
                 visitChargeInput.value = data.visit_charges ? `${data.visit_charges}` : 'N/A';
@@ -229,7 +229,8 @@ document.getElementById('visit_type').addEventListener('change', function () {
         visitChargeInput.value = '';
         totalAmountInput.value = '';
     }
-  });
+});
+
     
 </script>
 <script>
@@ -273,7 +274,7 @@ document.getElementById('appointment_date').addEventListener('change', function 
     timeslot.innerHTML = '<option value="">Loading...</option>';
     if (!doctorId || !date) return;
 
-    fetch(`/admin/schedule/slots?doctor_id=${doctorId}&date=${date}`)
+    fetch(`${BASE_URL}/admin/schedule/slots?doctor_id=${doctorId}&date=${date}`)
         .then(response => response.json())
         .then(data => {
             const timeSlotDropdown = document.getElementById('time_slot');

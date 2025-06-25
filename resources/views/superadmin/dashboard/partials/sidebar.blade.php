@@ -66,7 +66,7 @@
                     </a>
                     <ul class="sub-nav collapse" id="sidebar-patient" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
-                            <a class="nav-link " href="#">
+                            <a class="nav-link " href="{{ route('superadmin.hospitals.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -80,7 +80,7 @@
                         </li>
                         
                         <li class="nav-item">
-                            <a class="nav-link " href="#">
+                            <a class="nav-link " href="{{ route('superadmin.hospitals.create') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -93,7 +93,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="#">
+                            <a class="nav-link " href="{{ route('superadmin.subscription_packages.index') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>
@@ -106,7 +106,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="#">
+                            <a class="nav-link " href="{{ route('superadmin.subscription_packages.create') }}">
                                 <i class="icon">
                                     <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                                         <g>

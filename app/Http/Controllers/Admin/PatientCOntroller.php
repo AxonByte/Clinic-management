@@ -8,14 +8,20 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\UserDetail;
 use DataTables;
-
+use App\Models\Hospital;
+use App\Models\SubscriptionPackage;
 class PatientCOntroller extends Controller
 {
     public function index(Request $request){
         $pageTitle = 'Patient List';
         $doctors = User::with('detail')->where('role','doctor')->get();
          if ($request->ajax()) {
-        $departments = User::where('role','patient');
+        $hospitalId = auth()->user()->hospital_id;
+
+
+$departments = User::where('role', 'patient')
+                   ->where('hospital_id', $hospitalId)
+                   ->get();
 
             return DataTables::of($departments)
                ->addIndexColumn() 
@@ -77,7 +83,23 @@ class PatientCOntroller extends Controller
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('photos', 'public');
         }
-
+    $hospitalId = auth()->user()->hospital_id;
+   $hospital = Hospital::find($hospitalId);
+   $subscriptionPackage = $hospital->subscription_package;
+   $package = SubscriptionPackage::where('package_name', $subscriptionPackage)->first();
+   
+   if (!$package) {
+    return redirect('admin/doctor/')->with('error', 'Subscription package not found!');
+}
+   
+   $doctorLimit = $package->patient_limit;
+   $currentDoctorCount = User::where('role', 'admin')
+                          ->where('hospital_id', $hospitalId)
+                          ->count();
+		if ($currentDoctorCount >= $doctorLimit) {
+    return redirect('admin/doctor/')->with('error', 'Doctor limit reached for this subscription package.');
+}
+	
         // Create user
         $patient = new User();
         $patient->name = $request->name;
@@ -87,6 +109,8 @@ class PatientCOntroller extends Controller
         $patient->photo = $photoPath;
         $patient->doctor_id = $request->doctor_id ?? null;
         $patient->address = $request->input('address');
+		 $patient->address = $request->input('address');
+		$patient->hospital_id= $hospitalId;
         $patient->role = 'patient';
         $patient->save();
 

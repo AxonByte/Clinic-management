@@ -15,21 +15,27 @@ class DoctorScheduleController extends Controller
     public function index(Request $request)
     {
         $pageTitle = 'Doctor Schedule';
-        $doctors = User::where('role','doctor')->get();
-        if ($request->ajax()) {
-            $data = DoctorSchedule::with('doctor');
-            return DataTables::of($data)
-               ->addColumn('doctor_name', function($user) {
-                    return $user->doctor_id ? $user->doctor->name : 'N/A';
-                })
-                ->addColumn('status', fn($row) => "<span class='badge bg-info'>{$row->status}</span>")
-                ->addColumn('action', function ($row) {
-                    return '
-                    <button class="btn btn-sm btn-danger deleteBtn" data-id="'.$row->id.'">Delete</button>';
-                })
-                ->rawColumns(['status', 'action'])
-                ->make(true);
-        }
+       $doctors = User::where('role', 'doctor')
+    ->where('hospital_id', auth()->user()->hospital_id)
+    ->get();
+
+if ($request->ajax()) {
+    $data = DoctorSchedule::with('doctor')
+        ->whereHas('doctor', function ($q) {
+            $q->where('hospital_id', auth()->user()->hospital_id);
+        });
+
+    return DataTables::of($data)
+        ->addColumn('doctor_name', function ($schedule) {
+            return $schedule->doctor_id ? $schedule->doctor->name : 'N/A';
+        })
+        ->addColumn('status', fn($row) => "<span class='badge bg-info'>{$row->status}</span>")
+        ->addColumn('action', function ($row) {
+            return '<button class="btn btn-sm btn-danger deleteBtn" data-id="'.$row->id.'">Delete</button>';
+        })
+        ->rawColumns(['status', 'action'])
+        ->make(true);
+}
         return view('admin.doctors.schedule.schedule', compact('doctors','pageTitle'));
     }
 

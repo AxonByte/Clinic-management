@@ -102,7 +102,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<script>
+<script> const BASE_URL = "{{ url('/') }}";
 $(document).ready(function () {
     $('#holiday').DataTable({
         processing: true,
@@ -127,8 +127,8 @@ $('#addHolidayForm').submit(function(e){
     let formData = new FormData(this);
     let visitId = $('#holidays_id').val();
     let url = visitId 
-        ? `/admin/doctor/holidays/${visitId}` 
-        : `/admin/doctor/holidays`;
+        ? `${BASE_URL}/admin/doctor/holidays/${visitId}` 
+        : `${BASE_URL}/admin/doctor/holidays`;
     
     if (visitId) {
         formData.append('_method', 'PUT'); // Spoof PUT for update

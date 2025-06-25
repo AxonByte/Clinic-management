@@ -70,7 +70,14 @@
             </div>
 
           </div>
-          
+          <div class="col-md-6">
+  <label for="services" class="form-label fw-bold text-secondary">SERVICES</label>
+  <select class="form-select" id="services" name="services[]" multiple required>
+    <option value="">Select Service</option>
+  
+  </select>
+</div>
+       
           <div class="mb-3">
             <label for="description" class="form-label fw-bold text-secondary">DOCTOR DESCRIPTION</label>
             <textarea id="doctorDesc" class="form-control" name="description"></textarea>
@@ -341,5 +348,36 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+<script>
+$(document).ready(function () {
+  $('#department').on('change', function () {
+    const deptId = $(this).val();
+    const $services = $('#services');
+    $services.html('<option value="">Loading...</option>');
 
+    if (deptId) {
+      $.ajax({
+        url: "{{ route('admin.doctor.doctor.get.services') }}",
+        method: "GET",
+        data: { department_id: deptId },
+        success: function (response) {
+          $services.empty();
+          if (response.length) {
+            $.each(response, function (i, item) {
+              $services.append(`<option value="${item.id}">${item.name}</option>`);
+            });
+          } else {
+            $services.append('<option value="">No services found</option>');
+          }
+        },
+        error: function () {
+          $services.html('<option value="">Error loading services</option>');
+        }
+      });
+    } else {
+      $services.html('<option value="">Select Department First</option>');
+    }
+  });
+});
+</script>
  @endsection

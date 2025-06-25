@@ -568,8 +568,37 @@
                        
                     </ul>
                 </li>
-                
+        <!-- Users Menu -->
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+        <img src="{{ asset('images/user.jpeg') }}" alt="User Icon" width="20px" height="25px">
+        <span class="item-name">Users</span>
+    </a>
+</li>
 
+<!-- Roles Menu -->
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('admin/roles*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}">
+        <img src="{{ asset('images/roles-icon.png') }}" alt="Roles Icon" width="20px" height="25px">
+        <span class="item-name">Roles</span>
+    </a>
+</li>        
+<li class="nav-items"><ul class="sub-nav collapse {{ Request::is('admin/roles*') ? 'show' : '' }}" id="sidebar-roles" data-bs-parent="#sidebar-menu">
+    <li class="nav-item">
+	
+        <a class="nav-link {{ Request::is('admin/roles') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}">
+            <i class="icon">
+                <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                    <g>
+                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                    </g>
+                </svg>
+            </i>
+            <i class="sidenav-mini-icon"> R </i>
+            <span class="item-name">All Roles</span>
+        </a>
+    </li>
+</ul></li>
             </ul>
             <!-- Sidebar Menu End -->        </div>
     </div>

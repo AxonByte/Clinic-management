@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -18,17 +19,18 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
+     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
+        'address', 'service_ids',
+        'department_id',
+        'description',
         'photo',
         'sign',
-        'description',
-        'department_id',
-        'address',
         'role',
+        'hospital_id',  
     ];
 
     /**
@@ -84,6 +86,31 @@ class User extends Authenticatable
         return $this->hasMany(ProgressNote::class.'nurse_id');
     }
 
+
+        public function hospital(): BelongsTo
+    {
+        return $this->belongsTo(Hospital::class, 'hospital_id');
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'user_role');
+    }
+
+    public function hasPermission(string $permissionName): bool
+    {
+        return $this->roles()->whereHas('permissions', function ($query) use ($permissionName) {
+            $query->where('name', $permissionName);
+        })->exists();
+    }
+
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles()->where('name', $roleName)->exists();
+    }public function role()
+{
+    return $this->belongsTo(Role::class, 'role_id');  // adjust foreign key if different
+}
 
 
 }

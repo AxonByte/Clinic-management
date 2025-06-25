@@ -26,9 +26,9 @@ class AppointmentController extends Controller
     public function getData($status)
     {
         $query = Appointment::with(['patient', 'doctor','visit','payment']);
-
+ $hospitalId = auth()->user()->hospital_id;
         if ($status !== 'All') {
-            $query->where('status', $status)->latest()->get();
+            $query->where('status', $status)->where('hospital_id', $hospitalId)->latest()->get();
         }
 
         return \DataTables::of($query)
@@ -60,9 +60,11 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        $pageTitle = 'Add Appointment';
-        $doctors = User::where('role','doctor')->get();
-        $patients = User::where('role','patient')->get();
+        $pageTitle = 'Add Appointment'; 
+		$hospitalId = auth()->user()->hospital_id;
+        $doctors = User::where('role','doctor')->where('hospital_id', $hospitalId)->get();
+        $patients = User::where('role','patient')->where('hospital_id', $hospitalId)->get();
+		
         return view('admin.appointments.create', compact('doctors','patients','pageTitle'));
     }
 
@@ -144,7 +146,7 @@ class AppointmentController extends Controller
         ];
         $data = $request->validate($rules);
         $data['pay_now'] = $payNow;
-
+$hospitalId = auth()->user()->hospital_id;
         $appointment = Appointment::create($data);
 
         if ($payNow) {
@@ -153,7 +155,8 @@ class AppointmentController extends Controller
                 'amount'         => $data['total_amount'],
                 'deposit_type'   => $request->input('payment_mode'),
                 'card_number'    => $request->input('card_number'),
-                'expiry_date'    => $request->input('expiry_date'),
+                'expiry_date'    => $request->input('expiry_date'),   
+				'hospital_id'    => $hospitalId ,
                 'is_paid'        => true,
                 'status'         => 'paid',
                 'paid_at'        => now(),
